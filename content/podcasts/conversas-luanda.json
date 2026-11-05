@@ -1,0 +1,28 @@
+{
+  "titulo": "Conversas de Luanda",
+  "descricao": "Encontros longos com gente que faz a cidade — sem relógio, sem pauta.",
+  "imagem": "/media/501790582_723099973568908_6610626537631863966_n.jpg",
+  "episodios": [
+    {
+      "titulo": "Ep. 3 — O cinema angolano hoje",
+      "audio": "https://cdn.radiox.ao/podcasts/conversas-luanda/ep3.mp3",
+      "duracao": "48 min",
+      "data": "2026-10-30",
+      "rascunho": false
+    },
+    {
+      "titulo": "Ep. 2 — Cozinha de Rua",
+      "audio": "https://cdn.radiox.ao/podcasts/conversas-luanda/ep2.mp3",
+      "duracao": "41 min",
+      "data": "2026-10-23",
+      "rascunho": false
+    },
+    {
+      "titulo": "Ep. 1 — Quem acorda a cidade",
+      "audio": "https://cdn.radiox.ao/podcasts/conversas-luanda/ep1.mp3",
+      "duracao": "39 min",
+      "data": "2026-10-16",
+      "rascunho": false
+    }
+  ]
+}

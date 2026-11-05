@@ -1,0 +1,34 @@
+{
+  "rascunho": false,
+  "titulo": "Destaques",
+  "itens": [
+    {
+      "titulo": "Rádio X celebra um ano no ar",
+      "resumo": "Um ano de emissão ininterrupta e a programação especial do aniversário.",
+      "tag": "Institucional",
+      "imagem": "/media/784981923_1092628363282732_2773791522913315368_n.jpg",
+      "href": "/noticias/radio-x-aniversario/"
+    },
+    {
+      "titulo": "Workshop de locutores inscrições abertas",
+      "resumo": "Três dias de formação prática para quem quer voz própria no micro.",
+      "tag": "Comunidade",
+      "imagem": "/media/destaque-2.svg",
+      "href": "/noticias/workshop-jovens-locutores/"
+    },
+    {
+      "titulo": "Festival Rádio X 2026",
+      "resumo": "Data marcada para dezembro, com entrada livre até lotar.",
+      "tag": "Eventos",
+      "imagem": "/media/destaque-3.svg",
+      "href": "/eventos/"
+    },
+    {
+      "titulo": "Nova temporada de entrevistas",
+      "resumo": "Convidados de todas as artes na Tarde X, às quintas-feiras.",
+      "tag": "Entrevistas",
+      "imagem": "/media/destaque-4.svg",
+      "href": "/noticias/nova-temporada-entrevistas/"
+    }
+  ]
+}

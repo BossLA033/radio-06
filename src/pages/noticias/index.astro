@@ -1,0 +1,47 @@
+---
+import Base from '../../layouts/Base.astro';
+import Imagem from '../../components/Imagem.astro';
+import { definicoes, noticiasPublicadas } from '../../lib/conteudo';
+import { formatarData } from '../../lib/formatos';
+
+const noticias = await noticiasPublicadas();
+const d = await definicoes();
+---
+
+<Base titulo="Notícias" descricao={`Notícias e novidades da ${d.nome} ${d.frequencia}.`}>
+  <section class="mx-auto max-w-6xl px-4 py-12">
+    <h1 class="text-4xl font-black">Notícias</h1>
+    <p class="mt-2 text-suave">Tudo o que se passa na emissora e à volta dela.</p>
+
+    {
+      noticias.length === 0 ? (
+        <p class="mt-10 rounded-xl border border-borda bg-superficie p-8 text-center text-suave">
+          Ainda não há notícias publicadas.
+        </p>
+      ) : (
+        <ul class="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {noticias.map((noticia) => (
+            <li class="group">
+              <a href={`/noticias/${noticia.id}/`} class="block">
+                <div class="aspect-video overflow-hidden rounded-xl border border-borda bg-superficie">
+                  <Imagem
+                    src={noticia.data.capa}
+                    alt={noticia.data.titulo}
+                    classe="size-full transition duration-300 group-hover:scale-105"
+                  />
+                </div>
+                <p class="mt-3 text-xs uppercase tracking-wider text-acento">
+                  {noticia.data.tag} · {formatarData(noticia.data.data)}
+                </p>
+                <h2 class="mt-1 text-lg font-bold leading-snug group-hover:text-acento">
+                  {noticia.data.titulo}
+                </h2>
+                {noticia.data.resumo && <p class="mt-2 text-sm text-suave">{noticia.data.resumo}</p>}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+</Base>

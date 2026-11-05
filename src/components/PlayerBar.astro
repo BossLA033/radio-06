@@ -1,0 +1,131 @@
+---
+import { definicoes } from '../lib/conteudo';
+
+const d = await definicoes();
+const temStream = d.urlStream.length > 0;
+---
+
+<div
+  id="barra-player"
+  class="fixed inset-x-0 bottom-0 z-[600] border-t border-borda bg-superficie/95 backdrop-blur"
+  data-stream={d.urlStream}
+  transition:persist="player"
+>
+  <div class="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3">
+    <button
+      type="button"
+      id="player-botao"
+      class="grid size-12 shrink-0 place-items-center rounded-full bg-acento text-fundo transition hover:brightness-110"
+      aria-label="Reproduzir a emissão"
+      disabled={!temStream}
+    >
+      <span id="player-icone" aria-hidden="true">▶</span>
+    </button>
+
+    <div class="min-w-0 flex-1">
+      <p class="truncate text-sm font-semibold" id="player-titulo">
+        {temStream ? `${d.nome} — ${d.frequencia}` : 'Emissão por configurar'}
+      </p>
+      <p class="truncate text-xs text-suave" id="player-estado" aria-live="polite">
+        {temStream ? 'Toca para ouvir a emissão' : 'Define o url do stream no painel, em Definições'}
+      </p>
+    </div>
+
+    <a
+      href="/programacao/"
+      class="hidden shrink-0 rounded-full border border-borda px-4 py-2 text-sm transition hover:border-acento sm:block"
+    >
+      Programação
+    </a>
+  </div>
+</div>
+
+<script>
+  import { DIAS_SEMANA, agoraEmLuanda, proximoSlot, slotActual, type Slot } from '../lib/agora';
+  import { lerDados, nomePrograma } from '../lib/guiao';
+
+  function rotuloPrograma(grelha: Slot[]): string {
+    const instante = agoraEmLuanda();
+    const dados = lerDados();
+    const actual = slotActual(grelha, instante);
+    if (actual) return `No ar: ${nomePrograma(actual.programa, dados.programas)}`;
+    const seguinte = proximoSlot(grelha, instante);
+    if (seguinte) {
+      return `A seguir: ${nomePrograma(seguinte.programa, dados.programas)} (${DIAS_SEMANA[seguinte.dia]} ${seguinte.inicio})`;
+    }
+    return 'Sem grelha publicada';
+  }
+
+  function montarPlayer() {
+    const barra = document.getElementById('barra-player');
+    if (!barra || barra.dataset.ligado === '1') return;
+    barra.dataset.ligado = '1';
+
+    const botao = document.getElementById('player-botao') as HTMLButtonElement | null;
+    const icone = document.getElementById('player-icone');
+    const estado = document.getElementById('player-estado');
+    if (!botao || !icone || !estado) return;
+
+    const origem = barra.dataset.stream ?? '';
+    if (!origem) return;
+
+    const audio = new Audio();
+    audio.preload = 'none';
+    audio.src = origem;
+
+    let aTocar = false;
+    let indisponivel = false;
+
+    const desenhar = () => {
+      icone.textContent = aTocar ? '❚❚' : '▶';
+      botao.setAttribute('aria-label', aTocar ? 'Pausar a emissão' : 'Reproduzir a emissão');
+    };
+
+    const marcarIndisponivel = (motivo: string) => {
+      indisponivel = true;
+      aTocar = false;
+      botao.disabled = true;
+      botao.classList.add('opacity-50', 'cursor-not-allowed');
+      estado.textContent = motivo;
+      desenhar();
+    };
+
+    botao.addEventListener('click', async () => {
+      if (indisponivel) return;
+      if (aTocar) {
+        audio.pause();
+        return;
+      }
+      try {
+        await audio.play();
+        aTocar = true;
+        estado.textContent = rotuloPrograma(lerDados().grelha);
+        desenhar();
+      } catch {
+        marcarIndisponivel('Emissão indisponível');
+      }
+    });
+
+    audio.addEventListener('pause', () => {
+      if (!indisponivel) {
+        aTocar = false;
+        estado.textContent = 'Em pausa — toca para voltar a ouvir';
+        desenhar();
+      }
+    });
+
+    audio.addEventListener('error', () => {
+      marcarIndisponivel('Emissão indisponível');
+    });
+
+    const actualizarEstado = () => {
+      if (aTocar) estado.textContent = rotuloPrograma(lerDados().grelha);
+    };
+
+    window.setInterval(actualizarEstado, 30_000);
+    window.addEventListener('beforeunload', () => audio.pause());
+    desenhar();
+  }
+
+  document.addEventListener('astro:page-load', montarPlayer);
+</script>

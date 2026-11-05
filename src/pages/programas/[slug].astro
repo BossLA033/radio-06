@@ -1,0 +1,70 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/Base.astro';
+import Imagem from '../../components/Imagem.astro';
+import { apresentadoresTodos, programasVisiveis } from '../../lib/conteudo';
+
+export const getStaticPaths = (async () => {
+  const programas = await programasVisiveis();
+  return programas.map((programa) => ({ params: { slug: programa.id }, props: { programa } }));
+}) satisfies GetStaticPaths;
+
+const { programa } = Astro.props;
+const todos = await apresentadoresTodos();
+const equipa = todos.filter((pessoa) => programa.data.apresentadores.includes(pessoa.data.nome));
+---
+
+<Base titulo={programa.data.nome} descricao={programa.data.descricao}>
+  <article class="mx-auto max-w-4xl px-4 py-12">
+    <a href="/programas/" class="text-sm text-suave hover:text-acento">← Todos os programas</a>
+
+    <div class="mt-6 grid gap-8 md:grid-cols-2">
+      <div class="aspect-video overflow-hidden rounded-xl border border-borda bg-superficie">
+        <Imagem src={programa.data.imagem} alt={programa.data.nome} classe="size-full" emoji="🎙️" />
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wider text-acento">{programa.data.horario}</p>
+        <h1 class="mt-2 text-4xl font-black leading-tight">{programa.data.nome}</h1>
+        <p class="mt-4 text-suave">{programa.data.descricao}</p>
+
+        {
+          equipa.length > 0 && (
+            <div class="mt-6">
+              <p class="text-sm font-bold uppercase tracking-wider text-suave">Apresentação</p>
+              <ul class="mt-2 space-y-1">
+                {equipa.map((pessoa) => (
+                  <li>
+                    <a href="/apresentadores/" class="text-acento hover:underline">
+                      {pessoa.data.nome}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          {
+            programa.data.podcast && (
+              <a
+                href={programa.data.podcast}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="rounded-full bg-acento px-5 py-2.5 text-sm font-semibold text-fundo transition hover:brightness-110"
+              >
+                Podcast do programa ↗
+              </a>
+            )
+          }
+          <a
+            href="/programacao/"
+            class="rounded-full border border-borda px-5 py-2.5 text-sm font-semibold transition hover:border-acento hover:text-acento"
+          >
+            Ver na grelha
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+</Base>

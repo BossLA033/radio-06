@@ -1,0 +1,41 @@
+---
+import Base from '../../layouts/Base.astro';
+import Imagem from '../../components/Imagem.astro';
+import { apresentadoresTodos } from '../../lib/conteudo';
+
+const pessoas = await apresentadoresTodos();
+---
+
+<Base titulo="Apresentadores" descricao="A equipa que faz a emissora.">
+  <section class="mx-auto max-w-6xl px-4 py-12">
+    <h1 class="text-4xl font-black">Apresentadores</h1>
+    <p class="mt-2 text-suave">As vozes da grelha.</p>
+
+    {
+      pessoas.length === 0 ? (
+        <p class="mt-10 rounded-xl border border-borda bg-superficie p-8 text-center text-suave">
+          Ainda não há apresentadores publicados.
+        </p>
+      ) : (
+        <ul class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {pessoas.map((pessoa) => (
+            <li class="flex gap-4 rounded-xl border border-borda bg-superficie p-5">
+              <div class="size-20 shrink-0 overflow-hidden rounded-full bg-fundo">
+                <Imagem src={pessoa.data.foto} alt={pessoa.data.nome} classe="size-full" emoji="🙂" />
+              </div>
+              <div class="min-w-0">
+                <h2 class="font-black">{pessoa.data.nome}</h2>
+                {pessoa.data.programas.length > 0 && (
+                  <p class="text-xs uppercase tracking-wider text-acento">
+                    {pessoa.data.programas.join(' · ')}
+                  </p>
+                )}
+                <p class="mt-2 line-clamp-4 text-sm text-suave">{pessoa.data.bio}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+</Base>

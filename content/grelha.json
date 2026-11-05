@@ -1,0 +1,23 @@
+{
+  "slots": [
+    { "dia": 1, "inicio": "06:00", "fim": "10:00", "programa": "manha-x" },
+    { "dia": 1, "inicio": "10:00", "fim": "14:00", "programa": "tarde-x" },
+    { "dia": 1, "inicio": "18:00", "fim": "22:00", "programa": "noite-x" },
+    { "dia": 2, "inicio": "06:00", "fim": "10:00", "programa": "manha-x" },
+    { "dia": 2, "inicio": "10:00", "fim": "14:00", "programa": "tarde-x" },
+    { "dia": 2, "inicio": "18:00", "fim": "22:00", "programa": "noite-x" },
+    { "dia": 3, "inicio": "06:00", "fim": "10:00", "programa": "manha-x" },
+    { "dia": 3, "inicio": "10:00", "fim": "14:00", "programa": "tarde-x" },
+    { "dia": 3, "inicio": "18:00", "fim": "22:00", "programa": "noite-x" },
+    { "dia": 4, "inicio": "06:00", "fim": "10:00", "programa": "manha-x" },
+    { "dia": 4, "inicio": "10:00", "fim": "14:00", "programa": "tarde-x" },
+    { "dia": 4, "inicio": "18:00", "fim": "22:00", "programa": "noite-x" },
+    { "dia": 5, "inicio": "06:00", "fim": "10:00", "programa": "manha-x" },
+    { "dia": 5, "inicio": "10:00", "fim": "14:00", "programa": "tarde-x" },
+    { "dia": 5, "inicio": "18:00", "fim": "22:00", "programa": "noite-x" },
+    { "dia": 6, "inicio": "09:00", "fim": "13:00", "programa": "sabado-x" },
+    { "dia": 6, "inicio": "13:00", "fim": "17:00", "programa": "tarde-x" },
+    { "dia": 0, "inicio": "08:00", "fim": "12:00", "programa": "manha-x" },
+    { "dia": 0, "inicio": "20:00", "fim": "22:00", "programa": "noite-x" }
+  ]
+}

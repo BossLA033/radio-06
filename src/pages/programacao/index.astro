@@ -1,0 +1,99 @@
+---
+import Base from '../../layouts/Base.astro';
+import NoArAgora from '../../components/NoArAgora.astro';
+import { programasVisiveis, slots } from '../../lib/conteudo';
+import { DIAS_CURTOS, DIAS_SEMANA, ordenarGrelha } from '../../lib/agora';
+
+const lista = ordenarGrelha(await slots());
+const programas = await programasVisiveis();
+const porId = new Map(programas.map((programa) => [programa.id, programa]));
+const porDia = Array.from({ length: 7 }, (_, dia) => lista.filter((slot) => slot.dia === dia));
+---
+
+<Base
+  titulo="Programação"
+  descricao="Grelha semanal da Rádio X: o que está no ar e o que vem a seguir."
+>
+  <NoArAgora />
+
+  <section class="mx-auto max-w-6xl px-4 py-12">
+    <h1 class="text-4xl font-black">Programação</h1>
+    <p class="mt-2 text-suave">Hora de Luanda, todos os dias da semana.</p>
+
+    {
+      lista.length === 0 ? (
+        <p class="mt-10 rounded-xl border border-borda bg-superficie p-8 text-center text-suave">
+          A grelha ainda não foi publicada. Entra no painel e cria os horários em{' '}
+          <strong class="text-texto">Programação</strong>.
+        </p>
+      ) : (
+        <div class="mt-8 grid gap-4 md:grid-cols-7">
+          {porDia.map((doDia, dia) => (
+            <div>
+              <h2 class="border-b border-borda pb-2 text-sm font-bold uppercase tracking-wider text-acento">
+                <span class="md:hidden">{DIAS_SEMANA[dia]}</span>
+                <span class="hidden md:inline">{DIAS_CURTOS[dia]}</span>
+              </h2>
+              <ul class="mt-3 space-y-2">
+                {doDia.length === 0 && <li class="text-xs text-suave">Descanso</li>}
+                {doDia.map((slot) => {
+                  const programa = porId.get(slot.programa);
+                  return (
+                    <li
+                      class="rounded-lg border border-borda bg-superficie p-3 transition"
+                      data-slot
+                      data-dia={slot.dia}
+                      data-inicio={slot.inicio}
+                      data-fim={slot.fim}
+                    >
+                      <span class="block text-xs text-suave">
+                        {slot.inicio}–{slot.fim}
+                      </span>
+                      {programa ? (
+                        <a
+                          href={`/programas/${programa.id}/`}
+                          class="text-sm font-semibold hover:text-acento"
+                        >
+                          {programa.data.nome}
+                        </a>
+                      ) : (
+                        <span class="text-sm font-semibold">{slot.programa}</span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </div>
+      )
+    }
+  </section>
+</Base>
+
+<script>
+  import { agoraEmLuanda, minutos } from '../../lib/agora';
+
+  function marcarActual() {
+    const itens = document.querySelectorAll<HTMLElement>('[data-slot]');
+    if (itens.length === 0) return;
+
+    const instante = agoraEmLuanda();
+    const agora = instante.dia * 1440 + instante.minutos;
+
+    itens.forEach((item) => {
+      const dia = Number(item.dataset.dia);
+      const inicio = dia * 1440 + minutos(item.dataset.inicio ?? '00:00');
+      const fim = dia * 1440 + minutos(item.dataset.fim ?? '00:00');
+      const activo = agora >= inicio && agora < fim;
+
+      item.classList.toggle('border-acento', activo);
+      item.classList.toggle('bg-fundo', activo);
+      if (activo) item.setAttribute('aria-current', 'true');
+      else item.removeAttribute('aria-current');
+    });
+  }
+
+  document.addEventListener('astro:page-load', marcarActual);
+  window.setInterval(marcarActual, 60_000);
+</script>

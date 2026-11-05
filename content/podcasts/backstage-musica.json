@@ -1,0 +1,28 @@
+{
+  "titulo": "Backstage Música",
+  "descricao": "Bastidores de estúdio, takes perdidos e a história por trás dos temas que tocam na Rádio X.",
+  "imagem": "/media/breno_graffiti_12.jpg",
+  "episodios": [
+    {
+      "titulo": "Ep. 3 — Gravar em casa",
+      "audio": "https://cdn.radiox.ao/podcasts/backstage-musica/ep3.mp3",
+      "duracao": "35 min",
+      "data": "2026-11-01",
+      "rascunho": false
+    },
+    {
+      "titulo": "Ep. 2 — O primeiro single",
+      "audio": "https://cdn.radiox.ao/podcasts/backstage-musica/ep2.mp3",
+      "duracao": "32 min",
+      "data": "2026-10-25",
+      "rascunho": false
+    },
+    {
+      "titulo": "Ep. 1 — Som de Luanda",
+      "audio": "https://cdn.radiox.ao/podcasts/backstage-musica/ep1.mp3",
+      "duracao": "29 min",
+      "data": "2026-10-18",
+      "rascunho": false
+    }
+  ]
+}

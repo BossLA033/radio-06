@@ -1,0 +1,8 @@
+{
+  "rascunho": false,
+  "itens": [
+    { "texto": "Ao vivo agora: Noite X com Beto Mangueira", "cta": "Ouvir", "href": "/programacao/" },
+    { "texto": "Nova série: Conversas de Luanda", "cta": "Ver podcasts", "href": "/podcasts/" },
+    { "texto": "Agenda de dezembro já no ar", "cta": "Eventos", "href": "/eventos/" }
+  ]
+}

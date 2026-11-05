@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Rádio X">
+  <rect width="1600" height="900" fill="#14171d"/>
+  <rect x="8" y="8" width="1584" height="884" fill="none" stroke="#262b33" stroke-width="2"/>
+  <circle cx="800" cy="422" r="18" fill="#ff3b30"/>
+  <text x="50%" y="50%" fill="#f2f4f8" font-family="Arial, sans-serif" font-size="72" font-weight="700" text-anchor="middle" dominant-baseline="middle">Rádio X</text>
+  <text x="50%" y="486" fill="#9aa3b2" font-family="Arial, sans-serif" font-size="16" text-anchor="middle">Rádio X · 90.3 FM</text>
+</svg>

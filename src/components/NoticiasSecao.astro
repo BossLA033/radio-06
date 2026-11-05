@@ -1,0 +1,39 @@
+---
+import { noticiasPublicadas } from '../lib/conteudo';
+import { formatarData } from '../lib/formatos';
+import Imagem from './Imagem.astro';
+import Secao from './Secao.astro';
+
+const noticias = (await noticiasPublicadas()).slice(0, 3);
+---
+
+{
+  noticias.length > 0 && (
+    <Secao id="noticias" titulo="Últimas notícias" href="/noticias/" rotulo="Todas as notícias">
+      <ul class="grid gap-6 md:grid-cols-3">
+        {noticias.map((noticia) => (
+          <li class="group">
+            <a href={`/noticias/${noticia.id}/`} class="block">
+              <div class="aspect-video overflow-hidden rounded-xl border border-borda bg-superficie">
+                <Imagem
+                  src={noticia.data.capa}
+                  alt={noticia.data.titulo}
+                  classe="size-full transition duration-300 group-hover:scale-105"
+                />
+              </div>
+              <p class="mt-3 text-xs uppercase tracking-wider text-acento">
+                {noticia.data.tag} · {formatarData(noticia.data.data)}
+              </p>
+              <h3 class="mt-1 font-bold leading-snug group-hover:text-acento">
+                {noticia.data.titulo}
+              </h3>
+              {noticia.data.resumo && (
+                <p class="mt-2 text-sm text-suave">{noticia.data.resumo}</p>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </Secao>
+  )
+}

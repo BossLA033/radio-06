@@ -1,0 +1,56 @@
+---
+import Base from '../../layouts/Base.astro';
+import Imagem from '../../components/Imagem.astro';
+import { eventosPublicados } from '../../lib/conteudo';
+import { formatarDataLonga } from '../../lib/formatos';
+
+const agora = Date.now();
+const todos = await eventosPublicados();
+const futuros = todos.filter((evento) => evento.data.data.valueOf() >= agora);
+const passados = [...todos].reverse().filter((evento) => evento.data.data.valueOf() < agora);
+const lista = [...futuros, ...passados];
+---
+
+<Base titulo="Eventos" descricao="Agenda e encontros da emissora.">
+  <section class="mx-auto max-w-6xl px-4 py-12">
+    <h1 class="text-4xl font-black">Eventos</h1>
+    <p class="mt-2 text-suave">Onde nos encontramos.</p>
+
+    {
+      lista.length === 0 ? (
+        <p class="mt-10 rounded-xl border border-borda bg-superficie p-8 text-center text-suave">
+          Ainda não há eventos publicados.
+        </p>
+      ) : (
+        <ul class="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {lista.map((evento) => {
+            const passou = evento.data.data.valueOf() < agora;
+            return (
+              <li class:list={['overflow-hidden rounded-xl border bg-superficie', passou ? 'border-borda opacity-70' : 'border-acento']}>
+                <div class="aspect-video">
+                  <Imagem src={evento.data.imagem} alt={evento.data.titulo} classe="size-full" emoji="🎤" />
+                </div>
+                <div class="p-5">
+                  <p class="text-xs uppercase tracking-wider text-acento">{formatarDataLonga(evento.data.data)}</p>
+                  <h2 class="mt-1 text-lg font-bold">{evento.data.titulo}</h2>
+                  <p class="mt-1 text-sm text-suave">{evento.data.local}</p>
+                  <p class="mt-2 line-clamp-3 text-sm text-suave">{evento.data.descricao}</p>
+                  {evento.data.link && (
+                    <a
+                      href={evento.data.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="mt-3 inline-block text-sm font-semibold text-acento hover:underline"
+                    >
+                      Mais informação ↗
+                    </a>
+                  )}
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      )
+    }
+  </section>
+</Base>

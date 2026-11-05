@@ -1,0 +1,39 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { definicoes, paginasVisiveis } from '../../lib/conteudo';
+
+const d = await definicoes();
+const paginas = await paginasVisiveis();
+const entrada = paginas.find((pagina) => pagina.id === 'sobre');
+const resultado = entrada ? await render(entrada) : null;
+const Conteudo = resultado?.Content;
+---
+
+<Base titulo="Sobre" descricao={`Quem somos e o que fazemos na ${d.nome}.`}>
+  <section class="mx-auto max-w-3xl px-4 py-12">
+    <h1 class="text-4xl font-black">{entrada?.data.titulo ?? 'Sobre nós'}</h1>
+
+    {
+      Conteudo ? (
+        <div class="prose-noticia mt-6">
+          <Conteudo />
+        </div>
+      ) : (
+        <div class="prose-noticia mt-6">
+          <p>
+            A <strong>{d.nome}</strong> {d.frequencia} é uma rádio feita para quem quer mais do que
+            som: informação, música e companhia no dia a dia.
+          </p>
+          <p>
+            {d.slogan}. Nesta página podes contar a história da emissora — edita o conteúdo do
+            painel, secção <strong>Páginas</strong>, ficheiro <strong>sobre</strong>.
+          </p>
+          <p>
+            Queres falar connosco? Visita a <a href="/contactos/">página de contactos</a>.
+          </p>
+        </div>
+      )
+    }
+  </section>
+</Base>

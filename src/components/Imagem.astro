@@ -1,0 +1,32 @@
+---
+interface Props {
+  src?: string;
+  alt: string;
+  classe?: string;
+  emoji?: string;
+}
+
+const { src, alt, classe = '', emoji = '📻' } = Astro.props;
+const existe = typeof src === 'string' && src.length > 0;
+---
+
+{
+  existe ? (
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      class={`object-cover ${classe}`}
+      onerror="this.style.display='none';this.parentElement?.classList.add('sem-imagem')"
+    />
+  ) : (
+    <div
+      class={`grid place-items-center bg-linear-to-br from-superficie to-fundo text-3xl sem-imagem ${classe}`}
+      role="img"
+      aria-label={alt}
+    >
+      <span aria-hidden="true">{emoji}</span>
+    </div>
+  )
+}

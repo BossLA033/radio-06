@@ -1,0 +1,11 @@
+{
+  "nome": "Noite X",
+  "horario": "Seg a Sex · 18:00–22:00",
+  "descricao": "Música sem pressa, pedidos dos ouvintes e conversa boa para desligar o dia.",
+  "imagem": "/media/noites-x.webp",
+  "apresentadores": [
+    "Beto Mangueira"
+  ],
+  "podcast": "https://open.spotify.com/show/noitex-demo",
+  "rascunho": false
+}

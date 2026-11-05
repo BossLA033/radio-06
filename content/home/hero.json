@@ -1,0 +1,10 @@
+{
+  "rascunho": false,
+  "titulo": "    ",
+  "subtitulo": "   ",
+  "imagem": "/media/chatgpt-image-31_08_2026-16_23_00.png",
+  "botao": {
+    "texto": "Ver programação",
+    "href": "/programacao/"
+  }
+}

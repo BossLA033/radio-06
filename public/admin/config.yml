@@ -1,0 +1,322 @@
+backend:
+  name: git-gateway
+  branch: main
+
+site_url: /
+display_url: /
+
+media_folder: 'public/media'
+public_folder: '/media'
+
+collections:
+  - name: definicoes
+    label: Definições
+    files:
+      - name: settings
+        label: Identidade da rádio
+        file: content/settings.json
+        fields:
+          - { label: Nome, name: nome, widget: string, required: true }
+          - { label: Slogan, name: slogan, widget: string, required: true }
+          - { label: Frequência, name: frequencia, widget: string, hint: 'Ex.: 90.3 FM', required: true }
+          - {
+              label: URL do stream,
+              name: urlStream,
+              widget: string,
+              hint: 'Ex.: https://servidor.radiox.pt/stream (começa por http:// ou https://)',
+              required: true,
+            }
+          - { label: Email, name: email, widget: string, required: true }
+          - { label: Morada, name: morada, widget: string, required: false }
+          - label: Redes sociais
+            name: redes
+            widget: list
+            required: false
+            fields:
+              - { label: Nome, name: nome, widget: string }
+              - { label: Ligação, name: url, widget: string }
+
+  - name: grelha
+    label: Programação
+    files:
+      - name: grelha
+        label: Grelha semanal
+        file: content/grelha.json
+        fields:
+          - label: Horários
+            name: slots
+            widget: list
+            required: false
+            summary: '{{dia}} · {{inicio}}–{{fim}} · {{programa}}'
+            fields:
+              - label: Dia
+                name: dia
+                widget: select
+                options:
+                  - { label: Domingo, value: 0 }
+                  - { label: Segunda-feira, value: 1 }
+                  - { label: Terça-feira, value: 2 }
+                  - { label: Quarta-feira, value: 3 }
+                  - { label: Quinta-feira, value: 4 }
+                  - { label: Sexta-feira, value: 5 }
+                  - { label: Sábado, value: 6 }
+                default: 1
+              - {
+                  label: Início,
+                  name: inicio,
+                  widget: string,
+                  pattern: ['^[0-2][0-9]:[0-5][0-9]$', 'Hora no formato HH:MM (ex.: 08:00)'],
+                  hint: 'HH:MM',
+                }
+              - {
+                  label: Fim,
+                  name: fim,
+                  widget: string,
+                  pattern: ['^[0-2][0-9]:[0-5][0-9]$', 'Hora no formato HH:MM (ex.: 10:00)'],
+                  hint: 'HH:MM',
+                }
+              - {
+                  label: Programa,
+                  name: programa,
+                  widget: string,
+                  hint: 'Slug do programa (o nome do ficheiro em Programas, sem .json)',
+                }
+
+  - name: home
+    label: Página inicial
+    files:
+      - name: hero
+        label: Hero
+        file: content/home/hero.json
+        fields:
+          - { label: Em rascunho, name: rascunho, widget: boolean, default: false, required: false }
+          - { label: Título, name: titulo, widget: string, required: true }
+          - { label: Subtítulo, name: subtitulo, widget: string, required: true }
+          - { label: Imagem de fundo, name: imagem, widget: image, required: false }
+          - {
+              label: Vídeo de fundo,
+              name: video,
+              widget: string,
+              hint: 'URL de um vídeo (opcional)',
+              required: false,
+            }
+          - label: Botão principal
+            name: botao
+            widget: object
+            required: false
+            fields:
+              - { label: Texto, name: texto, widget: string }
+              - { label: Ligação, name: href, widget: string }
+
+      - name: banners
+        label: Faixa de avisos
+        file: content/home/banners.json
+        fields:
+          - { label: Em rascunho, name: rascunho, widget: boolean, default: false, required: false }
+          - label: Avisos
+            name: itens
+            widget: list
+            required: false
+            fields:
+              - { label: Texto, name: texto, widget: string }
+              - { label: Chamada para ação, name: cta, widget: string, required: false }
+              - { label: Ligação, name: href, widget: string, required: false }
+
+      - name: topx
+        label: Top X
+        file: content/home/topx.json
+        fields:
+          - { label: Em rascunho, name: rascunho, widget: boolean, default: false, required: false }
+          - { label: Título, name: titulo, widget: string, required: true }
+          - label: Itens
+            name: itens
+            widget: list
+            required: false
+            fields:
+              - { label: Posição, name: pos, widget: number, value_type: int, min: 1 }
+              - { label: Texto, name: texto, widget: string }
+              - { label: Imagem, name: imagem, widget: image, required: false }
+              - { label: Ligação, name: href, widget: string, required: false }
+
+      - name: destaques
+        label: Destaques
+        file: content/home/destaques.json
+        fields:
+          - { label: Em rascunho, name: rascunho, widget: boolean, default: false, required: false }
+          - { label: Título, name: titulo, widget: string, required: true }
+          - label: Cartões
+            name: itens
+            widget: list
+            required: false
+            fields:
+              - { label: Título, name: titulo, widget: string }
+              - { label: Resumo, name: resumo, widget: text }
+              - { label: Etiqueta, name: tag, widget: string, required: false }
+              - { label: Imagem, name: imagem, widget: image, required: false }
+              - { label: Ligação, name: href, widget: string, required: false }
+
+  - name: noticias
+    label: Notícias
+    folder: content/noticias
+    create: true
+    pattern: '**/*.md'
+    fields:
+      - { label: Título, name: titulo, widget: string, required: true }
+      - { label: Data, name: data, widget: date, format: 'YYYY-MM-DD', required: true }
+      - {
+          label: Etiqueta,
+          name: tag,
+          widget: select,
+          options: [Música, Entrevistas, Eventos, Programação, Comunidade, Institucional],
+          required: true,
+        }
+      - { label: Resumo, name: resumo, widget: text, required: false }
+      - { label: Imagem de capa, name: capa, widget: image, required: false }
+      - {
+          label: Link externo,
+          name: link,
+          widget: string,
+          hint: 'Se preencher, a notícia mostra um botão "Ler no original"',
+          required: false,
+        }
+      - { label: Em rascunho, name: rascunho, widget: boolean, default: false, required: false }
+      - { label: Corpo, name: body, widget: markdown, required: false }
+
+  - name: programas
+    label: Programas
+    folder: content/programas
+    create: true
+    extension: json
+    format: json
+    pattern: '**/*.json'
+    fields:
+      - { label: Nome, name: nome, widget: string, required: true }
+      - { label: Horário, name: horario, widget: string, hint: 'Ex.: Seg a Sex · 08:00–10:00', required: true }
+      - { label: Descrição, name: descricao, widget: text, required: true }
+      - { label: Imagem, name: imagem, widget: image, required: false }
+      - label: Apresentadores
+        name: apresentadores
+        widget: list
+        required: false
+        field: { label: Nome, name: nome, widget: string }
+      - {
+          label: Link do podcast,
+          name: podcast,
+          widget: string,
+          hint: 'Ligação externa ao podcast do programa',
+          required: false,
+        }
+      - { label: Em rascunho, name: rascunho, widget: boolean, default: false, required: false }
+
+  - name: podcasts
+    label: Podcasts
+    folder: content/podcasts
+    create: true
+    extension: json
+    format: json
+    pattern: '**/*.json'
+    fields:
+      - { label: Título, name: titulo, widget: string, required: true }
+      - { label: Descrição, name: descricao, widget: text, required: true }
+      - { label: Imagem, name: imagem, widget: image, required: false }
+      - label: Episódios
+        name: episodios
+        widget: list
+        required: false
+        summary: '{{titulo}} · {{data}}'
+        fields:
+          - { label: Título, name: titulo, widget: string, required: true }
+          - {
+              label: Áudio,
+              name: audio,
+              widget: string,
+              hint: 'URL do ficheiro de áudio (https://…/episodio.mp3)',
+              required: true,
+            }
+          - { label: Duração, name: duracao, widget: string, hint: 'Ex.: 42 min', required: true }
+          - { label: Data, name: data, widget: date, format: 'YYYY-MM-DD', required: true }
+          - { label: Em rascunho, name: rascunho, widget: boolean, default: false, required: false }
+
+  - name: apresentadores
+    label: Apresentadores
+    folder: content/apresentadores
+    create: true
+    extension: json
+    format: json
+    pattern: '**/*.json'
+    fields:
+      - { label: Nome, name: nome, widget: string, required: true }
+      - { label: Foto, name: foto, widget: image, required: false }
+      - { label: Biografia, name: bio, widget: text, required: true }
+      - label: Programas
+        name: programas
+        widget: list
+        required: false
+        field: { label: Programa, name: programa, widget: string }
+
+  - name: eventos
+    label: Eventos
+    folder: content/eventos
+    create: true
+    extension: json
+    format: json
+    pattern: '**/*.json'
+    fields:
+      - { label: Título, name: titulo, widget: string, required: true }
+      - { label: Data, name: data, widget: date, format: 'YYYY-MM-DD', required: true }
+      - { label: Local, name: local, widget: string, required: true }
+      - { label: Descrição, name: descricao, widget: text, required: true }
+      - { label: Imagem, name: imagem, widget: image, required: false }
+      - { label: Link, name: link, widget: string, required: false }
+      - { label: Em rascunho, name: rascunho, widget: boolean, default: false, required: false }
+
+  - name: patrocinadores
+    label: Patrocinadores
+    folder: content/patrocinadores
+    create: true
+    extension: json
+    format: json
+    pattern: '**/*.json'
+    fields:
+      - { label: Nome, name: nome, widget: string, required: true }
+      - { label: Logo, name: logo, widget: image, required: false }
+      - { label: Link, name: link, widget: string, required: false }
+
+  - name: videos
+    label: Vídeos
+    folder: content/videos
+    create: true
+    extension: json
+    format: json
+    pattern: '**/*.json'
+    fields:
+      - { label: Título, name: titulo, widget: string, required: true }
+      - { label: Miniatura, name: thumb, widget: image, required: false }
+      - {
+          label: Origem,
+          name: origem,
+          widget: select,
+          options:
+            [
+              { label: YouTube, value: youtube },
+              { label: Ficheiro, value: ficheiro },
+            ],
+          default: youtube,
+        }
+      - {
+          label: URL,
+          name: url,
+          widget: string,
+          hint: 'https://www.youtube.com/watch?v=… ou https://…/video.mp4',
+          required: true,
+        }
+
+  - name: paginas
+    label: Páginas
+    folder: content/paginas
+    create: true
+    pattern: '**/*.md'
+    fields:
+      - { label: Título, name: titulo, widget: string, required: true }
+      - { label: Em rascunho, name: rascunho, widget: boolean, default: false, required: false }
+      - { label: Corpo, name: body, widget: markdown, required: false }

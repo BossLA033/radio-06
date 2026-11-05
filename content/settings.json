@@ -1,0 +1,13 @@
+{
+  "nome": "Rádio X",
+  "slogan": "Mais que Ouvir, Sentir",
+  "frequencia": "90.3 FM",
+  "urlStream": "https://stream.radiox.ao/live",
+  "email": "geral@radiox.ao",
+  "morada": "Rua Rainha Ginga, 45 — Luanda, Angola",
+  "redes": [
+    { "nome": "Facebook", "url": "https://www.facebook.com/radioxao" },
+    { "nome": "Instagram", "url": "https://www.instagram.com/radioxao" },
+    { "nome": "YouTube", "url": "https://www.youtube.com/@radioxao" }
+  ]
+}

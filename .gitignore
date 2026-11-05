@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+npm-debug.log*
+preview.log*
+playwright-report/
+test-results/
+.DS_Store
+
+# Local Netlify folder
+.netlify

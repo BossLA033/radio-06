@@ -1,0 +1,61 @@
+---
+import { bannersPublicados } from '../lib/conteudo';
+
+const banners = await bannersPublicados();
+const itens = banners?.itens ?? [];
+---
+
+{
+  itens.length > 0 && (
+    <div class="overflow-hidden border-b border-borda bg-acento text-fundo" role="marquee" aria-label="Destaques">
+      <div class="marquee py-2">
+        {[0, 1].map(() => (
+          <span class="marquee-conteudo">
+            {itens.map((item) => (
+              <span class="mx-8 inline-block text-sm font-semibold whitespace-nowrap">
+                {item.texto}
+                {item.cta && (
+                  <a href={item.href ?? '#'} class="ml-2 underline underline-offset-4">
+                    {item.cta}
+                  </a>
+                )}
+              </span>
+            ))}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+<style>
+  .marquee {
+    display: flex;
+    width: max-content;
+    animation: correr 40s linear infinite;
+  }
+
+  .marquee:hover {
+    animation-play-state: paused;
+  }
+
+  .marquee-conteudo {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  @keyframes correr {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee {
+      animation: none;
+    }
+  }
+</style>

@@ -1,0 +1,67 @@
+---
+import { slots } from '../lib/conteudo';
+import Secao from './Secao.astro';
+
+const temGrelha = (await slots()).length > 0;
+---
+
+{
+  temGrelha && (
+    <Secao id="programacao-hoje" titulo="Programação de hoje" href="/programacao/" rotulo="Semana completa">
+      <ul id="lista-hoje" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" />
+      <p id="fora-horario" class="hidden text-sm text-suave">
+        Fora do horário de emissão — vê a grelha completa.
+      </p>
+    </Secao>
+  )
+}
+
+<script>
+  import { agoraEmLuanda, minutos } from '../lib/agora';
+  import { lerDados, nomePrograma } from '../lib/guiao';
+
+  function desenharHoje() {
+    const lista = document.getElementById('lista-hoje');
+    const aviso = document.getElementById('fora-horario');
+    if (!lista) return;
+
+    const dados = lerDados();
+    const instante = agoraEmLuanda();
+    const hoje = instante.dia;
+    const doDia = dados.grelha
+      .filter((slot) => slot.dia === hoje)
+      .sort((a, b) => a.inicio.localeCompare(b.inicio));
+
+    lista.innerHTML = '';
+    if (aviso) aviso.classList.add('hidden');
+
+    if (doDia.length === 0) {
+      if (aviso) aviso.classList.remove('hidden');
+      return;
+    }
+
+    const agora = hoje * 1440 + instante.minutos;
+
+    doDia.forEach((slot) => {
+      const li = document.createElement('li');
+      const activo =
+        agora >= hoje * 1440 + minutos(slot.inicio) && agora < hoje * 1440 + minutos(slot.fim);
+
+      li.className = [
+        'rounded-xl border p-4 transition',
+        activo ? 'border-acento bg-fundo' : 'border-borda bg-superficie',
+      ].join(' ');
+
+      li.innerHTML = `
+        <span class="block text-xs text-suave">${slot.inicio}–${slot.fim}</span>
+        <span class="block font-bold">${nomePrograma(slot.programa, dados.programas)}</span>
+        ${activo ? '<span class="mt-1 inline-block rounded-full bg-acento px-2 py-0.5 text-[11px] font-bold text-fundo">No ar</span>' : ''}
+      `;
+
+      lista.appendChild(li);
+    });
+  }
+
+  document.addEventListener('astro:page-load', desenharHoje);
+  window.setInterval(desenharHoje, 60_000);
+</script>

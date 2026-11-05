@@ -1,0 +1,52 @@
+---
+---
+
+<section class="border-y border-borda bg-superficie" aria-labelledby="no-ar-titulo">
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-6">
+    <div>
+      <p class="text-xs font-bold uppercase tracking-widest text-acento" id="no-ar-titulo">
+        No ar agora
+      </p>
+      <p class="mt-1 text-2xl font-black" id="no-ar-programa">—</p>
+    </div>
+    <div class="text-right">
+      <p class="text-xs font-bold uppercase tracking-widest text-suave">A seguir</p>
+      <p class="mt-1 text-sm" id="no-ar-seguinte">—</p>
+      <a href="/programacao/" class="mt-1 block text-xs text-suave underline hover:text-acento">
+        Ver programação completa
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { DIAS_SEMANA, agoraEmLuanda, proximoSlot, slotActual } from '../lib/agora';
+  import { lerDados, nomePrograma } from '../lib/guiao';
+
+  function actualizar() {
+    const programa = document.getElementById('no-ar-programa');
+    const seguinte = document.getElementById('no-ar-seguinte');
+    if (!programa || !seguinte) return;
+
+    const dados = lerDados();
+    if (dados.grelha.length === 0) {
+      programa.textContent = 'Grelha por publicar';
+      seguinte.textContent = 'Publica a programação no painel';
+      return;
+    }
+
+    const instante = agoraEmLuanda();
+    const actual = slotActual(dados.grelha, instante);
+    programa.textContent = actual
+      ? nomePrograma(actual.programa, dados.programas)
+      : 'Fora de horário';
+
+    const proximo = proximoSlot(dados.grelha, instante);
+    seguinte.textContent = proximo
+      ? `${nomePrograma(proximo.programa, dados.programas)} — ${DIAS_SEMANA[proximo.dia]} ${proximo.inicio}`
+      : '—';
+  }
+
+  document.addEventListener('astro:page-load', actualizar);
+  window.setInterval(actualizar, 30_000);
+</script>

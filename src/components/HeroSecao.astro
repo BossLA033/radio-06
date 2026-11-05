@@ -1,0 +1,54 @@
+---
+import { definicoes, heroPublicado } from '../lib/conteudo';
+import Imagem from './Imagem.astro';
+
+const d = await definicoes();
+const hero = await heroPublicado();
+---
+
+<section class="relative isolate overflow-hidden border-b border-borda">
+  {
+    hero?.video ? (
+      <video
+        class="absolute inset-0 size-full object-cover"
+        src={hero.video}
+        autoplay
+        muted
+        loop
+        playsinline
+        aria-hidden="true"
+      />
+    ) : hero?.imagem ? (
+      <div class="absolute inset-0">
+        <Imagem src={hero.imagem} alt="" classe="size-full" />
+      </div>
+    ) : null
+  }
+  <div class="absolute inset-0 bg-fundo/75" aria-hidden="true"></div>
+
+  <div class="relative mx-auto max-w-6xl px-4 py-20 md:py-28">
+    <p class="text-xs font-bold uppercase tracking-[0.3em] text-acento">
+      {d.frequencia} · {d.nome}
+    </p>
+    <h1 class="mt-4 max-w-3xl text-5xl font-black leading-[0.95] md:text-7xl">
+      {hero?.titulo ?? d.nome}
+    </h1>
+    <p class="mt-5 max-w-xl text-lg text-suave md:text-xl">
+      {hero?.subtitulo ?? d.slogan}
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a
+        href={hero?.botao?.href ?? '/programacao/'}
+        class="rounded-full bg-acento px-6 py-3 font-semibold text-fundo transition hover:brightness-110"
+      >
+        {hero?.botao?.texto ?? 'Ver programação'}
+      </a>
+      <a
+        href="/podcasts/"
+        class="rounded-full border border-borda px-6 py-3 font-semibold transition hover:border-acento hover:text-acento"
+      >
+        Ouvir podcasts
+      </a>
+    </div>
+  </div>
+</section>

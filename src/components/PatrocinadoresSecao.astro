@@ -1,0 +1,37 @@
+---
+import { patrocinadoresPublicados } from '../lib/conteudo';
+import Imagem from './Imagem.astro';
+import Secao from './Secao.astro';
+
+const patrocinadores = await patrocinadoresPublicados();
+---
+
+{
+  patrocinadores.length > 0 && (
+    <Secao id="patrocinadores" titulo="Patrocinadores">
+      <ul class="flex flex-wrap items-center justify-center gap-8">
+        {patrocinadores.map((patrocinador) => {
+          const marca = (
+            <span class="flex items-center gap-3 rounded-lg border border-borda bg-superficie px-5 py-3 grayscale transition hover:grayscale-0">
+              <span class="size-10 overflow-hidden rounded-md">
+                <Imagem src={patrocinador.data.logo} alt={patrocinador.data.nome} classe="size-full" emoji="🤝" />
+              </span>
+              <span class="text-sm font-semibold">{patrocinador.data.nome}</span>
+            </span>
+          );
+          return (
+            <li>
+              {patrocinador.data.link ? (
+                <a href={patrocinador.data.link} target="_blank" rel="noopener noreferrer">
+                  {marca}
+                </a>
+              ) : (
+                marca
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </Secao>
+  )
+}

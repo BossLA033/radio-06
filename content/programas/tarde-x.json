@@ -1,0 +1,10 @@
+{
+  "nome": "Tarde X",
+  "horario": "Seg a Sex · 10:00–14:00",
+  "descricao": "Convidados, cultura e a energia da tarde — do mercado ao palco, tudo o que move Angola ao meio-dia.",
+  "imagem": "/media/tarde-quente.webp",
+  "apresentadores": [
+    "Nzinga Jorge"
+  ],
+  "rascunho": false
+}

@@ -1,0 +1,36 @@
+{
+  "rascunho": false,
+  "titulo": "Top X da semana",
+  "itens": [
+    {
+      "pos": 1,
+      "texto": "Banda Sonora — tema de abertura da Manhã X",
+      "imagem": "/media/871807655_1768429428618655_4021752591651915095_n.jpg",
+      "href": "/programas/manha-x/"
+    },
+    {
+      "pos": 2,
+      "texto": "Entrevista: o novo álbum gravado no Kilamba",
+      "imagem": "/media/chatgpt-image-30_09_2026-10_58_05.png",
+      "href": "/noticias/nova-temporada-entrevistas/"
+    },
+    {
+      "pos": 3,
+      "texto": "Sessão acústica no palco da Rádio X",
+      "imagem": "/media/9d9490b631643d26b1a5183ff19a1f9d.jpg",
+      "href": "/eventos/"
+    },
+    {
+      "pos": 4,
+      "texto": "Backstage Música — bastidores do estúdio",
+      "imagem": "/media/breno-stencil.jpg",
+      "href": "/podcasts/backstage-musica/"
+    },
+    {
+      "pos": 5,
+      "texto": "Sábado X: clássicos de sempre",
+      "imagem": "/media/breno_graffiti_12.jpg",
+      "href": "/programas/sabado-x/"
+    }
+  ]
+}

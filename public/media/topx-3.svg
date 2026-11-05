@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-label="Top 3">
+  <rect width="800" height="600" fill="#14171d"/>
+  <rect x="8" y="8" width="784" height="584" fill="none" stroke="#262b33" stroke-width="2"/>
+  <circle cx="400" cy="272" r="18" fill="#ff3b30"/>
+  <text x="50%" y="50%" fill="#f2f4f8" font-family="Arial, sans-serif" font-size="40" font-weight="700" text-anchor="middle" dominant-baseline="middle">Top 3</text>
+  <text x="50%" y="336" fill="#9aa3b2" font-family="Arial, sans-serif" font-size="16" text-anchor="middle">Rádio X · 90.3 FM</text>
+</svg>

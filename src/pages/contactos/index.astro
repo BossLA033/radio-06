@@ -1,0 +1,124 @@
+---
+import Base from '../../layouts/Base.astro';
+import { definicoes } from '../../lib/conteudo';
+
+const d = await definicoes();
+---
+
+<Base titulo="Contactos" descricao={`Fala connosco — ${d.nome}.`}>
+  <section class="mx-auto max-w-6xl px-4 py-12">
+    <div class="grid gap-10 md:grid-cols-2">
+      <div>
+        <h1 class="text-4xl font-black">Contactos</h1>
+        <p class="mt-3 text-suave">
+          Sugestões, pedidos, músicas, parcerias — escreve-nos e respondemos.
+        </p>
+
+        <dl class="mt-8 space-y-5">
+          <div>
+            <dt class="text-xs font-bold uppercase tracking-wider text-suave">Email</dt>
+            <dd class="mt-1">
+              <a href={`mailto:${d.email}`} class="text-acento hover:underline">
+                {d.email}
+              </a>
+            </dd>
+          </div>
+          {
+            d.morada && (
+              <div>
+                <dt class="text-xs font-bold uppercase tracking-wider text-suave">Morada</dt>
+                <dd class="mt-1 text-suave">{d.morada}</dd>
+              </div>
+            )
+          }
+          {
+            d.redes.length > 0 && (
+              <div>
+                <dt class="text-xs font-bold uppercase tracking-wider text-suave">Redes</dt>
+                <dd class="mt-1 flex flex-wrap gap-4">
+                  {d.redes.map((rede) => (
+                    <a
+                      href={rede.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-acento hover:underline"
+                    >
+                      {rede.nome}
+                    </a>
+                  ))}
+                </dd>
+              </div>
+            )
+          }
+        </dl>
+      </div>
+
+      <form
+        name="contacto"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="campo-oculto"
+        action="/obrigado/"
+        class="rounded-xl border border-borda bg-superficie p-6"
+      >
+        <input type="hidden" name="form-name" value="contacto" />
+        <p class="hidden">
+          <label>
+            Não preenches isto:
+            <input name="campo-oculto" tabindex="-1" autocomplete="off" />
+          </label>
+        </p>
+
+        <div class="grid gap-4">
+          <label class="block">
+            <span class="text-xs font-bold uppercase tracking-wider text-suave">Nome *</span>
+            <input
+              type="text"
+              name="nome"
+              required
+              autocomplete="name"
+              class="mt-1 w-full rounded-lg border border-borda bg-fundo px-3 py-2 outline-none focus:border-acento"
+            />
+          </label>
+
+          <label class="block">
+            <span class="text-xs font-bold uppercase tracking-wider text-suave">Email *</span>
+            <input
+              type="email"
+              name="email"
+              required
+              autocomplete="email"
+              class="mt-1 w-full rounded-lg border border-borda bg-fundo px-3 py-2 outline-none focus:border-acento"
+            />
+          </label>
+
+          <label class="block">
+            <span class="text-xs font-bold uppercase tracking-wider text-suave">Assunto</span>
+            <input
+              type="text"
+              name="assunto"
+              class="mt-1 w-full rounded-lg border border-borda bg-fundo px-3 py-2 outline-none focus:border-acento"
+            />
+          </label>
+
+          <label class="block">
+            <span class="text-xs font-bold uppercase tracking-wider text-suave">Mensagem *</span>
+            <textarea
+              name="mensagem"
+              required
+              rows="6"
+              class="mt-1 w-full rounded-lg border border-borda bg-fundo px-3 py-2 outline-none focus:border-acento"
+            ></textarea>
+          </label>
+
+          <button
+            type="submit"
+            class="rounded-full bg-acento px-6 py-3 font-semibold text-fundo transition hover:brightness-110"
+          >
+            Enviar mensagem
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+</Base>

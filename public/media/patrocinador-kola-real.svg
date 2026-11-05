@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200" role="img" aria-label="Kola Real">
+  <rect x="8" y="8" width="384" height="184" fill="none" stroke="#262b33" stroke-width="2"/>
+  <text x="50%" y="50%" fill="#f2f4f8" font-family="Arial, sans-serif" font-size="28" font-weight="700" text-anchor="middle" dominant-baseline="middle">Kola Real</text>
+  <line x1="160" y1="130" x2="240" y2="130" stroke="#ff3b30" stroke-width="3"/>
+</svg>

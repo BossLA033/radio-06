@@ -1,0 +1,108 @@
+﻿---
+import { definicoes } from '../lib/conteudo';
+
+const d = await definicoes();
+const actual = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const ligações = [
+  { href: '/noticias/', rotulo: 'Notícias' },
+  { href: '/programacao/', rotulo: 'Programação' },
+  { href: '/programas/', rotulo: 'Programas' },
+  { href: '/podcasts/', rotulo: 'Podcasts' },
+  { href: '/apresentadores/', rotulo: 'Apresentadores' },
+  { href: '/eventos/', rotulo: 'Eventos' },
+  { href: '/videos/', rotulo: 'Vídeos' },
+  { href: '/sobre/', rotulo: 'Sobre' },
+  { href: '/contactos/', rotulo: 'Contactos' },
+];
+
+const activo = (href: string) => {
+  const caminho = href.replace(/\/$/, '');
+  return actual === caminho || (caminho !== '/' && actual.startsWith(caminho));
+};
+---
+
+<header class="sticky top-0 z-[200] border-b border-borda bg-fundo/90 backdrop-blur">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
+    <a
+      href="/"
+      class="flex items-center gap-2 font-black tracking-tight"
+      aria-label={`${d.nome} — página inicial`}
+    >
+      <span
+        class="grid size-9 place-items-center rounded-full bg-acento text-sm font-black text-fundo"
+        aria-hidden="true"
+      >
+        {d.frequencia.replace(' FM', '')}
+      </span>
+      <span class="text-lg">{d.nome}</span>
+    </a>
+
+    <nav aria-label="Navegação principal" class="hidden md:block">
+      <ul class="flex flex-wrap items-center justify-end gap-x-4 gap-y-1 text-sm">
+        {
+          ligações.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class:list={[
+                  'transition hover:text-acento',
+                  activo(item.href) ? 'font-semibold text-acento' : 'text-suave',
+                ]}
+                aria-current={activo(item.href) ? 'page' : undefined}
+              >
+                {item.rotulo}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <button
+      type="button"
+      id="menu-botao"
+      class="grid size-10 place-items-center rounded-full border border-borda md:hidden"
+      aria-expanded="false"
+      aria-controls="menu-movel"
+      aria-label="Abrir menu"
+    >
+      <span aria-hidden="true">☰</span>
+    </button>
+  </div>
+
+  <nav
+    id="menu-movel"
+    aria-label="Navegação móvel"
+    class="hidden border-t border-borda bg-superficie px-4 py-3 md:hidden"
+  >
+    <ul class="flex flex-col gap-3 text-sm">
+      {
+        ligações.map((item) => (
+          <li>
+            <a href={item.href} class="block py-1">
+              {item.rotulo}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<script>
+  function montarMenu() {
+    const botao = document.getElementById('menu-botao');
+    const menu = document.getElementById('menu-movel');
+    if (!botao || !menu || botao.dataset.ligado === '1') return;
+    botao.dataset.ligado = '1';
+    botao.addEventListener('click', () => {
+      const aberto = botao.getAttribute('aria-expanded') === 'true';
+      botao.setAttribute('aria-expanded', String(!aberto));
+      botao.setAttribute('aria-label', aberto ? 'Abrir menu' : 'Fechar menu');
+      menu.classList.toggle('hidden', aberto);
+    });
+  }
+
+  document.addEventListener('astro:page-load', montarMenu);
+</script>

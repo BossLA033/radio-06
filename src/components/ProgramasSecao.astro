@@ -1,0 +1,35 @@
+---
+import { programasVisiveis } from '../lib/conteudo';
+import Imagem from './Imagem.astro';
+import Secao from './Secao.astro';
+
+const programas = (await programasVisiveis()).slice(0, 6);
+---
+
+{
+  programas.length > 0 && (
+    <Secao id="programas" titulo="Programas" href="/programas/" rotulo="Todos os programas">
+      <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {programas.map((programa) => (
+          <li class="overflow-hidden rounded-xl border border-borda bg-superficie transition hover:border-acento">
+            <a href={`/programas/${programa.id}/`} class="block">
+              <div class="aspect-video">
+                <Imagem
+                  src={programa.data.imagem}
+                  alt={programa.data.nome}
+                  classe="size-full"
+                  emoji="🎙️"
+                />
+              </div>
+              <div class="p-5">
+                <p class="text-xs uppercase tracking-wider text-acento">{programa.data.horario}</p>
+                <h3 class="mt-1 text-lg font-black group-hover:text-acento">{programa.data.nome}</h3>
+                <p class="mt-2 line-clamp-3 text-sm text-suave">{programa.data.descricao}</p>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </Secao>
+  )
+}

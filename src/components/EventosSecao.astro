@@ -1,0 +1,33 @@
+---
+import { eventosPublicados } from '../lib/conteudo';
+import { formatarDataLonga } from '../lib/formatos';
+import Imagem from './Imagem.astro';
+import Secao from './Secao.astro';
+
+const agora = Date.now();
+const futuros = (await eventosPublicados()).filter((evento) => evento.data.data.valueOf() >= agora);
+const passados = (await eventosPublicados()).filter((evento) => evento.data.data.valueOf() < agora);
+const lista = [...futuros, ...passados].slice(0, 3);
+---
+
+{
+  lista.length > 0 && (
+    <Secao id="eventos" titulo="Eventos" href="/eventos/" rotulo="Todos os eventos">
+      <ul class="grid gap-6 md:grid-cols-3">
+        {lista.map((evento) => (
+          <li class="overflow-hidden rounded-xl border border-borda bg-superficie transition hover:border-acento">
+            <div class="aspect-video">
+              <Imagem src={evento.data.imagem} alt={evento.data.titulo} classe="size-full" emoji="🎤" />
+            </div>
+            <div class="p-5">
+              <p class="text-xs uppercase tracking-wider text-acento">{formatarDataLonga(evento.data.data)}</p>
+              <h3 class="mt-1 font-bold">{evento.data.titulo}</h3>
+              <p class="mt-1 text-sm text-suave">{evento.data.local}</p>
+              <p class="mt-2 line-clamp-3 text-sm text-suave">{evento.data.descricao}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </Secao>
+  )
+}

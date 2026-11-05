@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+import Imagem from '../../components/Imagem.astro';
+import { podcastsPublicos } from '../../lib/conteudo';
+import { formatarData } from '../../lib/formatos';
+
+const series = await podcastsPublicos();
+---
+
+<Base titulo="Podcasts" descricao="Programas e episódios para ouvir quando quiseres.">
+  <section class="mx-auto max-w-6xl px-4 py-12">
+    <h1 class="text-4xl font-black">Podcasts</h1>
+    <p class="mt-2 text-suave">Episódios a pedido, para ouvir no teu tempo.</p>
+
+    {
+      series.length === 0 ? (
+        <p class="mt-10 rounded-xl border border-borda bg-superficie p-8 text-center text-suave">
+          Ainda não há podcasts publicados.
+        </p>
+      ) : (
+        <ul class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {series.map(({ serie, episodios }) => (
+            <li class="overflow-hidden rounded-xl border border-borda bg-superficie transition hover:border-acento">
+              <a href={`/podcasts/${serie.id}/`} class="block">
+                <div class="aspect-video">
+                  <Imagem src={serie.data.imagem} alt={serie.data.titulo} classe="size-full" emoji="🎧" />
+                </div>
+                <div class="p-5">
+                  <p class="text-xs uppercase tracking-wider text-acento">
+                    {episodios.length} {episodios.length === 1 ? 'episódio' : 'episódios'} · último a{' '}
+                    {formatarData(episodios[0].data)}
+                  </p>
+                  <h2 class="mt-1 text-lg font-black">{serie.data.titulo}</h2>
+                  <p class="mt-2 line-clamp-3 text-sm text-suave">{serie.data.descricao}</p>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+</Base>

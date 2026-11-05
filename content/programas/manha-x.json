@@ -1,0 +1,11 @@
+{
+  "nome": "Manhã X",
+  "horario": "Seg a Sex · 06:00–10:00",
+  "descricao": "O arranque do dia com notícia de primeira hora, trânsito de Luanda e a banda sonora que acorda a cidade.",
+  "imagem": "/media/despertar-x.webp",
+  "apresentadores": [
+    "Edna Kiala"
+  ],
+  "podcast": "https://open.spotify.com/show/manhax-demo",
+  "rascunho": false
+}
