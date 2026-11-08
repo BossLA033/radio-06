@@ -544,8 +544,10 @@ a {
   margin-top: 0.35rem;
 }
 .prose-noticia h2 {
-  margin-top: 1.8rem;
+  margin-top: 2.5rem;
+  font-size: 1.5rem;
   font-weight: 900;
+  color: var(--color-texto);
 }
 .prose-noticia h3 {
   margin-top: 2rem;
