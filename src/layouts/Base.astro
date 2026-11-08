@@ -30,6 +30,12 @@ const descricaoFinal = descricao ?? `${d.nome} ${d.frequencia}. ${d.slogan}.`;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={descricaoFinal} />
     <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,800;0,900;1,600;1,900&display=swap"
+      rel="stylesheet"
+    />
     <title>{tituloCompleto}</title>
     <slot name="head" />
   </head>
