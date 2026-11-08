@@ -4,84 +4,75 @@ import { definicoes } from '../lib/conteudo';
 const d = await definicoes();
 const ano = new Date().getFullYear();
 
-const colunas = [
-  {
-    titulo: 'Ouvir',
-    ligações: [
-      { href: '/programacao/', rotulo: 'Programação' },
-      { href: '/programas/', rotulo: 'Programas' },
-      { href: '/podcasts/', rotulo: 'Podcasts' },
-      { href: '/videos/', rotulo: 'Vídeos' },
-    ],
-  },
-  {
-    titulo: 'Descobrir',
-    ligações: [
-      { href: '/noticias/', rotulo: 'Notícias' },
-      { href: '/eventos/', rotulo: 'Eventos' },
-      { href: '/apresentadores/', rotulo: 'Apresentadores' },
-      { href: '/sobre/', rotulo: 'Sobre' },
-    ],
-  },
+const navegação = [
+  { href: '/noticias/', rotulo: 'Notícias' },
+  { href: '/podcasts/', rotulo: 'Podcasts' },
+  { href: '/videos/', rotulo: 'Vídeos' },
+  { href: '/programas/', rotulo: 'Programas' },
+  { href: '/programacao/', rotulo: 'Programação' },
+  { href: '/concertos/', rotulo: 'Concertos' },
 ];
+
+const legais = [
+  { href: '/sobre/', rotulo: 'Frequências' },
+  { href: '/contactos/', rotulo: 'Feedback' },
+  { href: '/sobre/', rotulo: 'Termos e condições' },
+  { href: '/sobre/', rotulo: 'Política de privacidade' },
+  { href: '/contactos/', rotulo: 'Publicidade' },
+];
+
+const irmandades = ['RÁDIO X', 'MÚSICA X', 'CIDADE FM', 'SMOOTH X', 'BOOM X', 'AUDIO X'];
 ---
 
-<footer class="mt-20 border-t border-borda bg-superficie">
-  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 md:grid-cols-4">
+<footer class="mt-10 border-t border-borda bg-[#0d0d0d]">
+  <div class="foot-main">
     <div>
-      <p class="text-lg font-black">{d.nome}</p>
-      <p class="mt-1 text-sm text-suave">{d.slogan}</p>
-      <p class="mt-3 text-sm font-semibold text-destaque">{d.frequencia}</p>
+      <a href="/" class="wordmark" style="font-size:32px">{d.nome}</a>
+      <p class="tagline">{d.slogan} — {d.frequencia}.</p>
+      {d.morada && <p class="tagline">{d.morada}</p>}
+      <a class="tagline" href={`mailto:${d.email}`}>{d.email}</a>
       {
-        d.morada && (
-          <p class="mt-3 text-sm text-suave">{d.morada}</p>
+        d.redes.length > 0 && (
+          <div class="mt-3 flex gap-4">
+            {d.redes.map((rede) => (
+              <a href={rede.url} rel="noopener noreferrer" target="_blank">
+                {rede.nome}
+              </a>
+            ))}
+          </div>
         )
       }
-      <a href={`mailto:${d.email}`} class="mt-2 block text-sm text-suave hover:text-acento">
-        {d.email}
-      </a>
     </div>
-
-    {
-      colunas.map((coluna) => (
-        <div>
-          <p class="text-sm font-bold uppercase tracking-wider text-suave">{coluna.titulo}</p>
-          <ul class="mt-3 space-y-2 text-sm">
-            {coluna.ligações.map((item) => (
-              <li>
-                <a href={item.href} class="hover:text-acento">
-                  {item.rotulo}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))
-    }
 
     <div>
-      <p class="text-sm font-bold uppercase tracking-wider text-suave">Redes</p>
-      <ul class="mt-3 space-y-2 text-sm">
-        {
-          d.redes.length > 0 ? (
-            d.redes.map((rede) => (
-              <li>
-                <a href={rede.url} class="hover:text-acento" rel="noopener noreferrer" target="_blank">
-                  {rede.nome}
-                </a>
-              </li>
-            ))
-          ) : (
-            <li class="text-suave">A definir no painel</li>
-          )
-        }
-      </ul>
+      <h5>Navegação</h5>
+      {navegação.map((item) => <a href={item.href}>{item.rotulo}</a>)}
+    </div>
+
+    <div>
+      <h5>Segue-nos</h5>
+      {d.redes.length > 0
+        ? d.redes.map((rede) => (
+            <a href={rede.url} rel="noopener noreferrer" target="_blank">
+              {rede.nome}
+            </a>
+          ))
+        : <p>Redes a definir no painel</p>}
+      <a href="/apresentadores/">A equipa</a>
+      <a href="/sobre/">Sobre nós</a>
     </div>
   </div>
 
-  <div class="border-t border-borda">
-    <p class="mx-auto max-w-6xl px-4 py-4 text-xs text-suave">
-      © {ano} {d.nome} — {d.slogan}. Todos os direitos reservados.
-    </p>
+  <div class="sisters">
+    {irmandades.map((nome) => <span>{nome}</span>)}
   </div>
+
+  <div class="foot-links">
+    {legais.map((item) => <a href={item.href}>{item.rotulo}</a>)}
+  </div>
+
+  <p class="copy">
+    © {ano} {d.nome} {d.frequencia}. Todos os direitos reservados.<br />
+    Qualquer reprodução sem consentimento é expressamente proibida.
+  </p>
 </footer>

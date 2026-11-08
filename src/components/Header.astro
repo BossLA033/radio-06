@@ -5,78 +5,60 @@ const d = await definicoes();
 const actual = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 const ligações = [
-  { href: '/noticias/', rotulo: 'Notícias' },
-  { href: '/programacao/', rotulo: 'Programação' },
-  { href: '/programas/', rotulo: 'Programas' },
-  { href: '/podcasts/', rotulo: 'Podcasts' },
-  { href: '/apresentadores/', rotulo: 'Apresentadores' },
-  { href: '/eventos/', rotulo: 'Eventos' },
-  { href: '/videos/', rotulo: 'Vídeos' },
-  { href: '/sobre/', rotulo: 'Sobre' },
-  { href: '/contactos/', rotulo: 'Contactos' },
+  { href: '/#passou', rotulo: 'OUVIR' },
+  { href: '/#podcasts', rotulo: 'PODCASTS' },
+  { href: '/#passou', rotulo: 'PASSOU' },
+  { href: '/#videos', rotulo: 'VÍDEOS' },
+  { href: '/#programas', rotulo: 'PROGRAMAS' },
+  { href: '/#destaques', rotulo: 'DESTAQUES' },
+  { href: '/#tnt', rotulo: 'TOP X' },
+  { href: '/#noticias', rotulo: 'NOTÍCIAS' },
+  { href: '/#equipa', rotulo: 'SOMOS NÓS' },
 ];
 
-const activo = (href: string) => {
-  const caminho = href.replace(/\/$/, '');
-  return actual === caminho || (caminho !== '/' && actual.startsWith(caminho));
-};
+const activo = (href: string) => href.startsWith('/#') ? false : actual === href.replace(/\/$/, '');
 ---
 
-<header class="sticky top-0 z-[200] border-b border-borda bg-fundo/90 backdrop-blur">
-  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-    <a
-      href="/"
-      class="flex items-center gap-2 font-black tracking-tight"
-      aria-label={`${d.nome} — página inicial`}
-    >
-      <span
-        class="grid size-9 place-items-center rounded-full bg-acento text-sm font-black text-fundo"
-        aria-hidden="true"
-      >
-        {d.frequencia.replace(' FM', '')}
-      </span>
-      <span class="text-lg">{d.nome}</span>
+<header class="sticky top-0 z-[200] border-b border-borda bg-fundo">
+  <div class="flex flex-wrap items-center gap-7 px-6 py-2.5">
+    <a href="/" class="flex flex-col" aria-label={`${d.nome} — página inicial`}>
+      <span class="wordmark">{d.nome}</span>
+      <span class="freq">{d.frequencia}</span>
     </a>
 
-    <nav aria-label="Navegação principal" class="hidden md:block">
-      <ul class="flex flex-wrap items-center justify-end gap-x-4 gap-y-1 text-sm">
-        {
-          ligações.map((item) => (
-            <li>
-              <a
-                href={item.href}
-                class:list={[
-                  'transition hover:text-acento',
-                  activo(item.href) ? 'font-semibold text-acento' : 'text-suave',
-                ]}
-                aria-current={activo(item.href) ? 'page' : undefined}
-              >
-                {item.rotulo}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+    <nav aria-label="Navegação principal" class="nav-topo ml-auto hidden md:flex flex-wrap gap-6">
+      {
+        ligações.map((item) => (
+          <a href={item.href} class:list={[activo(item.href) && 'activo']}>
+            {item.rotulo}
+          </a>
+        ))
+      }
     </nav>
+
+    <div class="ml-auto flex items-center gap-3 text-suave md:ml-0">
+      <a href="/contactos/" aria-label="Contactos">✉</a>
+      <a href="/sobre/" aria-label="Sobre a rádio">◎</a>
+    </div>
 
     <button
       type="button"
       id="menu-botao"
-      class="grid size-10 place-items-center rounded-full border border-borda md:hidden"
+      class="border-none bg-transparent text-2xl text-texto md:hidden"
       aria-expanded="false"
       aria-controls="menu-movel"
       aria-label="Abrir menu"
     >
-      <span aria-hidden="true">☰</span>
+      ☰
     </button>
   </div>
 
   <nav
     id="menu-movel"
     aria-label="Navegação móvel"
-    class="hidden border-t border-borda bg-superficie px-4 py-3 md:hidden"
+    class="hidden border-t border-borda bg-superficie px-6 py-4 md:hidden"
   >
-    <ul class="flex flex-col gap-3 text-sm">
+    <ul class="flex flex-col gap-3 text-sm font-extrabold tracking-widest">
       {
         ligações.map((item) => (
           <li>
@@ -86,6 +68,8 @@ const activo = (href: string) => {
           </li>
         ))
       }
+      <li><a href="/programacao/" class="block py-1">PROGRAMAÇÃO</a></li>
+      <li><a href="/contactos/" class="block py-1">CONTACTOS</a></li>
     </ul>
   </nav>
 </header>
