@@ -114,3 +114,21 @@ export async function apresentadoresTodos() {
   const todos = await getCollection('apresentadores');
   return [...todos].sort((a, b) => a.data.nome.localeCompare(b.data.nome, 'pt'));
 }
+
+export async function passouPublicado() {
+  const entrada = await getEntry('passou', 'passou');
+  if (!entrada || entrada.data.rascunho) return null;
+  return entrada.data;
+}
+
+export async function homenagensPublicadas() {
+  const entrada = await getEntry('homenagens', 'homenagens');
+  if (!entrada || entrada.data.rascunho) return null;
+  return entrada.data;
+}
+
+export async function publicidadePublicada() {
+  const entrada = await getEntry('publicidade', 'publicidade');
+  if (!entrada || entrada.data.rascunho) return null;
+  return entrada.data;
+}

@@ -1,0 +1,11 @@
+{
+  "rascunho": false,
+  "itens": [
+    { "hora": "16:19", "artista": "Foo Fighters", "musica": "Times Like These [Acoustic]" },
+    { "hora": "16:16", "artista": "Calma", "musica": "A Nossa Dança" },
+    { "hora": "16:13", "artista": "Alex Warren", "musica": "Ordinary" },
+    { "hora": "16:10", "artista": "Bruno Mars", "musica": "Risk It All" },
+    { "hora": "16:07", "artista": "Maro", "musica": "Kiss Me" },
+    { "hora": "16:03", "artista": "Adele", "musica": "Skyfall" }
+  ]
+}

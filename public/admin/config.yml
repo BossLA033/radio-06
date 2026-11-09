@@ -255,7 +255,7 @@ collections:
         field: { label: Programa, name: programa, widget: string }
 
   - name: eventos
-    label: Eventos
+    label: Concertos
     folder: content/eventos
     create: true
     extension: json
@@ -320,3 +320,55 @@ collections:
       - { label: Título, name: titulo, widget: string, required: true }
       - { label: Em rascunho, name: rascunho, widget: boolean, default: false, required: false }
       - { label: Corpo, name: body, widget: markdown, required: false }
+
+  - name: passou
+    label: Passou
+    files:
+      - name: passou
+        label: Faixa Passou
+        file: content/passou.json
+        fields:
+          - { label: Rascunho, name: rascunho, widget: boolean, required: false, default: false }
+          - label: Músicas
+            name: itens
+            widget: list
+            summary: '{{hora}} · {{artista}} — {{musica}}'
+            fields:
+              - { label: Hora, name: hora, widget: string, pattern: ['^\d{2}:\d{2}$', 'Use HH:MM'], required: true }
+              - { label: Artista, name: artista, widget: string, required: true }
+              - { label: Música, name: musica, widget: string, required: true }
+
+  - name: homenagens
+    label: Homenagens
+    files:
+      - name: homenagens
+        label: Carrossel de homenagens
+        file: content/homenagens.json
+        fields:
+          - { label: Rascunho, name: rascunho, widget: boolean, required: false, default: false }
+          - label: Itens
+            name: itens
+            widget: list
+            summary: '{{titulo}}'
+            fields:
+              - { label: Título, name: titulo, widget: string, required: true }
+              - { label: Artista, name: artista, widget: string, required: false }
+              - { label: Imagem, name: imagem, widget: image, required: false }
+              - { label: Ligação, name: href, widget: string, required: false }
+
+  - name: publicidade
+    label: Publicidade
+    files:
+      - name: publicidade
+        label: Caixotes do meio da página
+        file: content/publicidade.json
+        fields:
+          - { label: Rascunho, name: rascunho, widget: boolean, required: false, default: false }
+          - label: Caixotes
+            name: itens
+            widget: list
+            summary: '{{texto}}'
+            fields:
+              - { label: Texto, name: texto, widget: string, required: true }
+              - { label: Imagem, name: imagem, widget: image, required: false }
+              - { label: Ligação, name: href, widget: string, required: false }

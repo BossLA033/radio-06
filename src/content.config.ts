@@ -220,6 +220,55 @@ const paginas = defineCollection({
   }),
 });
 
+const passou = defineCollection({
+  loader: glob({ base: './content', pattern: 'passou.json' }),
+  schema: z.object({
+    rascunho: RASCUNHO,
+    itens: z
+      .array(
+        z.object({
+          hora: HORA,
+          artista: z.string().min(1),
+          musica: z.string().min(1),
+        }),
+      )
+      .default([]),
+  }),
+});
+
+const homenagens = defineCollection({
+  loader: glob({ base: './content', pattern: 'homenagens.json' }),
+  schema: z.object({
+    rascunho: RASCUNHO,
+    itens: z
+      .array(
+        z.object({
+          titulo: z.string().min(1),
+          artista: z.string().min(1).optional(),
+          imagem: IMAGEM.optional(),
+          href: z.string().min(1).optional(),
+        }),
+      )
+      .default([]),
+  }),
+});
+
+const publicidade = defineCollection({
+  loader: glob({ base: './content', pattern: 'publicidade.json' }),
+  schema: z.object({
+    rascunho: RASCUNHO,
+    itens: z
+      .array(
+        z.object({
+          texto: z.string().min(1),
+          href: z.string().min(1).optional(),
+          imagem: IMAGEM.optional(),
+        }),
+      )
+      .default([]),
+  }),
+});
+
 export const collections = {
   definicoes,
   grelha,
@@ -235,4 +284,7 @@ export const collections = {
   patrocinadores,
   videos,
   paginas,
+  passou,
+  homenagens,
+  publicidade,
 };
