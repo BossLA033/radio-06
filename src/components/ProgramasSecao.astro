@@ -1,25 +1,26 @@
 ---
 import { programasVisiveis } from '../lib/conteudo';
+import Carrossel from './Carrossel.astro';
 import Imagem from './Imagem.astro';
 import Secao from './Secao.astro';
 
+interface Props {
+  id?: string;
+  variante?: 'grelha' | 'faixa' | 'tira';
+}
+const { id = 'programas', variante = 'grelha' } = Astro.props;
 const programas = (await programasVisiveis()).slice(0, 6);
 ---
 
 {
-  programas.length > 0 && (
-    <Secao id="programas" titulo="Programas" href="/programas/" rotulo="Todos os programas">
+  programas.length > 0 && variante === 'grelha' && (
+    <Secao id={id} titulo="Programas" href="/programas/" rotulo="Todos os programas">
       <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {programas.map((programa) => (
           <li class="overflow-hidden rounded-xl border border-borda bg-superficie transition hover:border-acento">
             <a href={`/programas/${programa.id}/`} class="block">
               <div class="aspect-video">
-                <Imagem
-                  src={programa.data.imagem}
-                  alt={programa.data.nome}
-                  classe="size-full"
-                  emoji="🎙️"
-                />
+                <Imagem src={programa.data.imagem} alt={programa.data.nome} classe="size-full" emoji="🎙️" />
               </div>
               <div class="p-5">
                 <p class="text-xs uppercase tracking-wider text-acento">{programa.data.horario}</p>
@@ -30,6 +31,41 @@ const programas = (await programasVisiveis()).slice(0, 6);
           </li>
         ))}
       </ul>
+    </Secao>
+  )
+}
+{
+  programas.length > 0 && variante === 'faixa' && (
+    <section id={id} class="section">
+      <div class="wrap">
+        <ul class="flex gap-3 overflow-x-auto pb-1.5">
+          {programas.map((programa) => (
+            <li class="mini">
+              <div class="thumb">
+                <Imagem src={programa.data.imagem} alt={programa.data.nome} classe="size-full absolute inset-0" emoji="🎙️" />
+                <span class="tag">NO AR</span>
+              </div>
+              <div class="txt">{programa.data.nome}</div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+{
+  programas.length > 0 && variante === 'tira' && (
+    <Secao id={id} titulo="Programas" href="/programas/" rotulo="Todos os programas">
+      <Carrossel id="progCar">
+        {programas.map((programa) => (
+          <div class="item">
+            <div class="thumb">
+              <Imagem src={programa.data.imagem} alt={programa.data.nome} classe="size-full absolute inset-0" emoji="🎙️" />
+            </div>
+            <div class="txt">{programa.data.nome}</div>
+          </div>
+        ))}
+      </Carrossel>
     </Secao>
   )
 }

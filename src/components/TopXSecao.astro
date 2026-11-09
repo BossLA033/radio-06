@@ -11,7 +11,7 @@ const itens = [...(topx?.itens ?? [])]
 
 {
   itens.length > 0 && (
-    <Secao id="top-x" titulo={topx?.titulo ?? 'Top X'}>
+    <Secao id="tnt" titulo={topx?.titulo ?? 'Top X'}>
       <ol class="divide-y divide-borda rounded-xl border border-borda bg-superficie">
         {itens.map((item) => {
           const conteudo = (

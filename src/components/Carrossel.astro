@@ -1,0 +1,29 @@
+---
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+---
+
+<div class="relative">
+  <div class="car" id={id}>
+    <slot />
+  </div>
+  <button type="button" class="arrow l" data-car-dir={id} data-passo="-600" aria-label="Anterior">‹</button>
+  <button type="button" class="arrow r" data-car-dir={id} data-passo="600" aria-label="Seguinte">›</button>
+</div>
+
+<script>
+  function ligarCarrosseis() {
+    document.querySelectorAll<HTMLButtonElement>('[data-car-dir]').forEach((botao) => {
+      if (botao.dataset.ligado === '1') return;
+      botao.dataset.ligado = '1';
+      botao.addEventListener('click', () => {
+        const alvo = botao.dataset.carDir;
+        const passo = Number(botao.dataset.passo ?? '300');
+        if (alvo) document.getElementById(alvo)?.scrollBy({ left: passo, behavior: 'smooth' });
+      });
+    });
+  }
+  document.addEventListener('astro:page-load', ligarCarrosseis);
+</script>

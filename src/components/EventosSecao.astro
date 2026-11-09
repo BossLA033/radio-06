@@ -12,7 +12,7 @@ const lista = [...futuros, ...passados].slice(0, 3);
 
 {
   lista.length > 0 && (
-    <Secao id="eventos" titulo="Eventos" href="/eventos/" rotulo="Todos os eventos">
+    <Secao id="concertos" titulo="Eventos" href="/eventos/" rotulo="Todos os eventos">
       <ul class="grid gap-6 md:grid-cols-3">
         {lista.map((evento) => (
           <li class="overflow-hidden rounded-xl border border-borda bg-superficie transition hover:border-acento">

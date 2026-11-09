@@ -3,44 +3,46 @@ import { destaquesPublicados } from '../lib/conteudo';
 import Imagem from './Imagem.astro';
 import Secao from './Secao.astro';
 
+interface Props {
+  variante?: 'grelha' | 'carrossel';
+  id?: string;
+}
+const { variante = 'grelha', id = 'destaques' } = Astro.props;
+
 const destaques = await destaquesPublicados();
 const itens = destaques?.itens ?? [];
 ---
 
 {
-  itens.length > 0 && (
-    <Secao id="destaques" titulo={destaques?.titulo ?? 'Destaques'}>
-      <ul class="grid gap-6 md:grid-cols-3">
-        {itens.map((item) => {
-          const cartao = (
-            <div class="overflow-hidden rounded-xl border border-borda bg-superficie transition group-hover:border-acento">
-              <div class="aspect-video">
-                <Imagem src={item.imagem} alt={item.titulo} classe="size-full" emoji="✨" />
-              </div>
-              <div class="p-5">
-                {item.tag && (
-                  <span class="rounded-full bg-fundo px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-acento">
-                    {item.tag}
-                  </span>
-                )}
-                <h3 class="mt-2 font-black leading-snug group-hover:text-acento">{item.titulo}</h3>
-                <p class="mt-2 line-clamp-3 text-sm text-suave">{item.resumo}</p>
-              </div>
-            </div>
-          );
-          return (
-            <li class="group">
-              {item.href ? (
-                <a href={item.href} class="block">
-                  {cartao}
-                </a>
-              ) : (
-                cartao
-              )}
-            </li>
-          );
-        })}
+  itens.length > 0 && variante === 'grelha' ? (
+    <Secao id={id} titulo={destaques?.titulo ?? 'Em destaque'}>
+      <ul class="hero-row">
+        {itens.map((item, i) => (
+          <li class:list={['big', (i === 0 || i === itens.length - 1) && 'wide']}>
+            {item.href && <a href={item.href} class="absolute inset-0 z-[3]" aria-label={item.titulo} />}
+            <Imagem src={item.imagem} alt={item.titulo} classe="size-full absolute inset-0 object-cover" emoji="✨" />
+            <span class="cap">
+              {item.tag && <span class="text-destaque">{item.tag} · </span>}
+              {item.titulo}
+            </span>
+          </li>
+        ))}
       </ul>
     </Secao>
-  )
+  ) : itens.length > 0 ? (
+    <Secao id={id} titulo={destaques?.titulo ?? 'Destaques'} href="/noticias/" rotulo="VER MAIS">
+      <ul class="flex gap-4 overflow-x-auto pb-1.5">
+        {itens.map((item) => (
+          <li class="item" style="flex:0 0 260px">
+            <div class="thumb">
+              <Imagem src={item.imagem} alt={item.titulo} classe="size-full absolute inset-0" emoji="⭐" />
+            </div>
+            <div class="txt">
+              {item.href ? <a href={item.href}>{item.titulo}</a> : item.titulo}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </Secao>
+  ) : null
 }

@@ -1,0 +1,28 @@
+---
+import { homenagensPublicadas } from '../lib/conteudo';
+import Imagem from './Imagem.astro';
+import Secao from './Secao.astro';
+
+const homenagens = await homenagensPublicadas();
+const itens = homenagens?.itens ?? [];
+---
+
+{
+  itens.length > 0 && (
+    <Secao id="homenagens" titulo="Homenagens">
+      <ul class="flex gap-4 overflow-x-auto pb-1.5">
+        {itens.map((item) => (
+          <li class="item" style="flex:0 0 210px">
+            <div class="thumb">
+              <Imagem src={item.imagem} alt={item.titulo} classe="size-full absolute inset-0" emoji="🎸" />
+            </div>
+            <div class="txt">
+              {item.href ? <a href={item.href}>{item.titulo}</a> : item.titulo}
+              {item.artista && <div class="text-suave">{item.artista}</div>}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </Secao>
+  )
+}

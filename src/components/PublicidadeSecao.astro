@@ -1,0 +1,29 @@
+---
+import { publicidadePublicada } from '../lib/conteudo';
+
+interface Props {
+  indice: number;
+}
+const { indice } = Astro.props;
+const caixote = (await publicidadePublicada())?.itens?.[indice];
+---
+
+{
+  caixote && (
+    <div class="ad">
+      {caixote.imagem ? (
+        caixote.href ? (
+          <a href={caixote.href}>
+            <img src={caixote.imagem} alt={caixote.texto} class="w-full rounded-md" loading="lazy" />
+          </a>
+        ) : (
+          <img src={caixote.imagem} alt={caixote.texto} class="w-full rounded-md" loading="lazy" />
+        )
+      ) : caixote.href ? (
+        <a href={caixote.href} class="ad-box block">{caixote.texto}</a>
+      ) : (
+        <div class="ad-box">{caixote.texto}</div>
+      )}
+    </div>
+  )
+}

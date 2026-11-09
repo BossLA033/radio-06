@@ -1,0 +1,33 @@
+---
+import { passouPublicado } from '../lib/conteudo';
+import Carrossel from './Carrossel.astro';
+
+const passou = await passouPublicado();
+const itens = passou?.itens ?? [];
+---
+
+{
+  itens.length > 0 && (
+    <section id="passou" class="passou">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>PASSOU</h2>
+        </div>
+        <Carrossel id="passouCar">
+          {itens.map((faixa) => (
+            <div class="item">
+              <div class="time">{faixa.hora}</div>
+              <div class="disc">
+                <div class="vinyl" />
+              </div>
+              <div class="who">
+                <b>{faixa.artista}</b>
+                {faixa.musica}
+              </div>
+            </div>
+          ))}
+        </Carrossel>
+      </div>
+    </section>
+  )
+}

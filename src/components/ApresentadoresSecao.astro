@@ -1,0 +1,24 @@
+---
+import { apresentadoresTodos } from '../lib/conteudo';
+import Imagem from './Imagem.astro';
+import Secao from './Secao.astro';
+
+const equipa = await apresentadoresTodos();
+---
+
+{
+  equipa.length > 0 && (
+    <Secao id="equipa" titulo="A EQUIPA" href="/apresentadores/" rotulo="VER MAIS">
+      <ul class="team">
+        {equipa.map((pessoa) => (
+          <li class="tm">
+            <div class="ph">
+              <Imagem src={pessoa.data.foto} alt={pessoa.data.nome} classe="size-full" emoji="👤" />
+            </div>
+            <div class="nm">{pessoa.data.nome}</div>
+          </li>
+        ))}
+      </ul>
+    </Secao>
+  )
+}

@@ -1,30 +1,31 @@
 ---
 import Base from '../layouts/Base.astro';
-import BannerSecao from '../components/BannerSecao.astro';
+import ApresentadoresSecao from '../components/ApresentadoresSecao.astro';
 import DestaquesSecao from '../components/DestaquesSecao.astro';
 import EventosSecao from '../components/EventosSecao.astro';
-import HeroSecao from '../components/HeroSecao.astro';
-import NoArAgora from '../components/NoArAgora.astro';
+import HomenagensSecao from '../components/HomenagensSecao.astro';
 import NoticiasSecao from '../components/NoticiasSecao.astro';
-import PatrocinadoresSecao from '../components/PatrocinadoresSecao.astro';
+import PassouSecao from '../components/PassouSecao.astro';
 import PodcastsSecao from '../components/PodcastsSecao.astro';
-import ProgramacaoSecao from '../components/ProgramacaoSecao.astro';
 import ProgramasSecao from '../components/ProgramasSecao.astro';
+import PublicidadeSecao from '../components/PublicidadeSecao.astro';
 import TopXSecao from '../components/TopXSecao.astro';
 import VideosSecao from '../components/VideosSecao.astro';
 ---
 
 <Base>
-  <HeroSecao />
-  <BannerSecao />
-  <NoArAgora />
+  <ProgramasSecao id="programas" variante="faixa" />
+  <DestaquesSecao variante="grelha" id="em-destaque" />
   <NoticiasSecao />
-  <ProgramacaoSecao />
-  <ProgramasSecao />
   <PodcastsSecao />
-  <EventosSecao />
+  <PassouSecao />
   <VideosSecao />
+  <HomenagensSecao />
   <TopXSecao />
-  <DestaquesSecao />
-  <PatrocinadoresSecao />
+  <ProgramasSecao id="tira" variante="tira" />
+  <PublicidadeSecao indice={0} />
+  <DestaquesSecao variante="carrossel" id="destaques" />
+  <PublicidadeSecao indice={1} />
+  <EventosSecao />
+  <ApresentadoresSecao />
 </Base>
