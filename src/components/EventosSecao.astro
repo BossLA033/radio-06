@@ -12,18 +12,18 @@ const lista = [...futuros, ...passados].slice(0, 3);
 
 {
   lista.length > 0 && (
-    <Secao id="concertos" titulo="Eventos" href="/eventos/" rotulo="Todos os eventos">
+    <Secao id="concertos" titulo="CONCERTOS" href="/concertos/" rotulo="VER MAIS">
       <ul class="grid gap-6 md:grid-cols-3">
         {lista.map((evento) => (
-          <li class="overflow-hidden rounded-xl border border-borda bg-superficie transition hover:border-acento">
-            <div class="aspect-video">
-              <Imagem src={evento.data.imagem} alt={evento.data.titulo} classe="size-full" emoji="🎤" />
+          <li class="item">
+            <div class="thumb">
+              <Imagem src={evento.data.imagem} alt={evento.data.titulo} classe="size-full absolute inset-0" emoji="🎫" />
             </div>
-            <div class="p-5">
-              <p class="text-xs uppercase tracking-wider text-acento">{formatarDataLonga(evento.data.data)}</p>
-              <h3 class="mt-1 font-bold">{evento.data.titulo}</h3>
-              <p class="mt-1 text-sm text-suave">{evento.data.local}</p>
-              <p class="mt-2 line-clamp-3 text-sm text-suave">{evento.data.descricao}</p>
+            <div class="txt">
+              <span class="text-destaque">{formatarDataLonga(evento.data.data)}</span>
+              <div class="mt-1 font-bold">{evento.data.titulo}</div>
+              <div class="text-suave">{evento.data.local}</div>
+              <p class="mt-1 line-clamp-3 text-suave">{evento.data.descricao}</p>
             </div>
           </li>
         ))}

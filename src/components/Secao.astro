@@ -6,21 +6,17 @@ interface Props {
   rotulo?: string;
 }
 
-const { id, titulo, href, rotulo = 'Ver tudo' } = Astro.props;
+const { id, titulo, href, rotulo = 'VER MAIS' } = Astro.props;
 ---
 
-<section id={id} class="mx-auto max-w-6xl px-4 py-12">
-  <div class="flex flex-wrap items-end justify-between gap-3">
-    <h2 class="text-2xl font-black">{titulo}</h2>
-    {
-      href && (
-        <a href={href} class="text-sm text-suave underline-offset-4 hover:text-acento hover:underline">
-          {rotulo}
-        </a>
-      )
-    }
-  </div>
-  <div class="mt-6">
-    <slot />
+<section id={id} class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>{titulo}</h2>
+      {href && <a href={href} class="vermais">{rotulo}</a>}
+    </div>
+    <div class="mt-6">
+      <slot />
+    </div>
   </div>
 </section>

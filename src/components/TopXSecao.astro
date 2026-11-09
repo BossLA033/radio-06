@@ -7,35 +7,40 @@ const topx = await topxPublicado();
 const itens = [...(topx?.itens ?? [])]
   .filter((item) => !item.href || item.href.length > 0)
   .sort((a, b) => a.pos - b.pos);
+const meio = Math.ceil(itens.length / 2);
+const colunas = [itens.slice(0, meio), itens.slice(meio)];
 ---
 
 {
   itens.length > 0 && (
-    <Secao id="tnt" titulo={topx?.titulo ?? 'Top X'}>
-      <ol class="divide-y divide-borda rounded-xl border border-borda bg-superficie">
-        {itens.map((item) => {
-          const conteudo = (
-            <div class="flex items-center gap-4 p-4">
-              <span class="w-10 shrink-0 text-center text-2xl font-black text-acento">{item.pos}</span>
-              <div class="size-14 shrink-0 overflow-hidden rounded-lg bg-fundo">
-                <Imagem src={item.imagem} alt="" classe="size-full" emoji="⭐" />
-              </div>
-              <span class="font-semibold">{item.texto}</span>
-            </div>
-          );
-          return (
-            <li>
-              {item.href ? (
-                <a href={item.href} class="block transition hover:bg-fundo">
+    <Secao id="tnt" titulo="TOP X">
+      <div class="tnt-grid">
+        {colunas.map((coluna) => (
+          <div class="tnt-col">
+            {coluna.map((item) => {
+              const conteudo = (
+                <>
+                  <span class="tnt-pos">{item.pos}</span>
+                  <div class="cov">
+                    <Imagem src={item.imagem} alt="" classe="size-full" emoji="⭐" />
+                  </div>
+                  <div class="inf">
+                    <b>{item.texto}</b>
+                  </div>
+                </>
+              );
+              return item.href ? (
+                <a href={item.href} class="tnt-item">
                   {conteudo}
                 </a>
               ) : (
-                conteudo
-              )}
-            </li>
-          );
-        })}
-      </ol>
+                <div class="tnt-item">{conteudo}</div>
+              );
+            })}
+          </div>
+        ))}
+        <div class="side-ad">ESPAÇO PUBLICITÁRIO<br><span style="font-size:12px;font-weight:400">300×600</span></div>
+      </div>
     </Secao>
   )
 }
