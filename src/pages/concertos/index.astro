@@ -11,15 +11,15 @@ const passados = [...todos].reverse().filter((evento) => evento.data.data.valueO
 const lista = [...futuros, ...passados];
 ---
 
-<Base titulo="Eventos" descricao="Agenda e encontros da emissora.">
+<Base titulo="Concertos" descricao="Agenda de concertos da emissora.">
   <section class="mx-auto max-w-6xl px-4 py-12">
-    <h1 class="text-4xl font-black">Eventos</h1>
+    <h1 class="text-4xl font-black">Concertos</h1>
     <p class="mt-2 text-suave">Onde nos encontramos.</p>
 
     {
       lista.length === 0 ? (
         <p class="mt-10 rounded-xl border border-borda bg-superficie p-8 text-center text-suave">
-          Ainda não há eventos publicados.
+          Ainda não há concertos publicados.
         </p>
       ) : (
         <ul class="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">

@@ -9,7 +9,7 @@ A **Rádio X** é uma emissora angolana com sede em Luanda e sinal em 90.3 FM. N
 
 - **Emissão ao vivo** de segunda a domingo, com a grelha publicada na secção [Programação](/programacao/);
 - **Podcasts** das edições destacades, disponíveis em [Podcasts](/podcasts/);
-- **Eventos** próprios e parceiros, listados em [Eventos](/eventos/);
+- **Concertos** próprios e parceiros, listados em [Concertos](/concertos/);
 - **Comunidade** de locutores e ouvintes, com workshops e encontros.
 
 ## Contacto

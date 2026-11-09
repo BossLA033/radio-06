@@ -7,7 +7,7 @@ const ROTAS = [
   '/programas/',
   '/podcasts/',
   '/apresentadores/',
-  '/eventos/',
+  '/concertos/',
   '/videos/',
   '/sobre/',
   '/contactos/',
