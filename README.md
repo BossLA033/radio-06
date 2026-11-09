@@ -74,3 +74,7 @@ Localmente (`npm run dev`) o `/admin/` abre, mas o login Netlify não funciona s
 
 O contrato de conteúdo e design está em
 `docs/superpowers/specs/2026-10-26-radio-x-estatico-design.md`.
+
+## Deploy
+
+Vercel: https://radio-06.vercel.app (producao, CD por push)
