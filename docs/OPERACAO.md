@@ -64,6 +64,11 @@ por isso conclui-se via API:
 ## Deploys
 
 - **Vercel**: deploy automático por push (CD verificado). `/admin/` tem `noindex`.
+  - Repo **público desde 2026-11-12**: com repo privado + plano Hobby, a Vercel
+    bloqueava (`Deployment was blocked`) commits do admin Decap (`dorme244`),
+    que não é o dono da equipa Vercel (`bidonpequeno`). Tornar o repo público
+    remove essa verificação de autor — publicações do admin voltam a disparar
+    deploy na hora. Verificado com commit `dorme244` após a mudança.
 - **Netlify**: créditos esgotados — builds git bloqueados
   (`Skipped due to account credit usage exceeded`).
   - Publicar pelo Decap → commit no GitHub → **Vercel actualiza o site público** ✓.
