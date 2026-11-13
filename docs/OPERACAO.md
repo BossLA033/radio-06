@@ -68,7 +68,10 @@ por isso conclui-se via API:
     bloqueava (`Deployment was blocked`) commits do admin Decap (`dorme244`),
     que não é o dono da equipa Vercel (`bidonpequeno`). Tornar o repo público
     remove essa verificação de autor — publicações do admin voltam a disparar
-    deploy na hora. Verificado com commit `dorme244` após a mudança.
+    deploy na hora. Verificado a 2026-11-13 com commit `7d8cfa7` (`dorme244`):
+    status Vercel `success` em ~15 s. Nota: o commit `736b93d` (empurrado
+    exactamente na mudança de visibilidade) perdeu o webhook e nunca recebeu
+    status — é normal, não indicativo de falha.
 - **Netlify**: créditos esgotados — builds git bloqueados
   (`Skipped due to account credit usage exceeded`).
   - Publicar pelo Decap → commit no GitHub → **Vercel actualiza o site público** ✓.
