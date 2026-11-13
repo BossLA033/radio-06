@@ -21,9 +21,14 @@ const activo = (href: string) => href.startsWith('/#') ? false : actual === href
 
 <header class="sticky top-0 z-[200] border-b border-borda bg-fundo">
   <div class="flex flex-wrap items-center gap-7 px-6 py-2.5">
-    <a href="/" class="flex flex-col" aria-label={`${d.nome} — página inicial`}>
-      <span class="wordmark">{d.nome}</span>
-      <span class="freq">{d.frequencia}</span>
+    <a href="/" aria-label={`${d.nome} — página inicial`}>
+      <img
+        src="/logo/logo_radio_x_transparent.png"
+        alt={d.nome}
+        width="180"
+        height="48"
+        class="h-10 w-auto md:h-11"
+      />
     </a>
 
     <nav aria-label="Navegação principal" class="nav-topo ml-auto hidden md:flex flex-wrap gap-6">
