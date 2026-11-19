@@ -1,29 +1,203 @@
 ---
 interface Props {
-  id: string;
+  id?: string;
+  auto?: boolean;
+  setas?: boolean;
+  intervalo?: number;
+  rotulo?: string;
 }
-const { id } = Astro.props;
+
+const { id, auto = false, setas = true, intervalo = 4000, rotulo = 'Carrossel' } = Astro.props;
 ---
 
-<div class="relative">
-  <div class="car" id={id}>
+<div
+  class="relative"
+  data-carrossel
+  data-auto={auto ? '' : null}
+  data-setas={setas ? '' : null}
+  data-intervalo={intervalo}
+  id={id}
+  role="group"
+  aria-roledescription="carrossel"
+  aria-label={rotulo}
+>
+  <ul class="car snap-x snap-mandatory" data-faixa tabindex="0">
     <slot />
-  </div>
-  <button type="button" class="arrow l" data-car-dir={id} data-passo="-600" aria-label="Anterior">‹</button>
-  <button type="button" class="arrow r" data-car-dir={id} data-passo="600" aria-label="Seguinte">›</button>
+  </ul>
+  {
+    setas && (
+      <Fragment>
+        <button type="button" class="arrow l" data-seta-anterior aria-label={`${rotulo} anterior`}>
+          ‹
+        </button>
+        <button type="button" class="arrow r" data-seta-seguinte aria-label={`${rotulo} seguinte`}>
+          ›
+        </button>
+      </Fragment>
+    )
+  }
 </div>
 
+<style is:global>
+  [data-carrossel] [data-faixa] > * {
+    scroll-snap-align: start;
+  }
+  [data-carrossel][data-sem-movimento] .arrow {
+    display: none;
+  }
+</style>
+
 <script>
-  function ligarCarrosseis() {
-    document.querySelectorAll<HTMLButtonElement>('[data-car-dir]').forEach((botao) => {
-      if (botao.dataset.ligado === '1') return;
-      botao.dataset.ligado = '1';
-      botao.addEventListener('click', () => {
-        const alvo = botao.dataset.carDir;
-        const passo = Number(botao.dataset.passo ?? '300');
-        if (alvo) document.getElementById(alvo)?.scrollBy({ left: passo, behavior: 'smooth' });
-      });
+  import { offsetAnterior, proximoOffset, type Passo } from '../lib/carrossel';
+
+  interface Instancia {
+    raiz: HTMLElement;
+    faixa: HTMLElement;
+    temporizador: number | null;
+    intervalo: number;
+    auto: boolean;
+    sobre: boolean;
+    focado: boolean;
+    aTocar: boolean;
+  }
+
+  const instancias = new Map<HTMLElement, Instancia>();
+
+  const movimentoReduzido = (): boolean =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function offsetsDe(inst: Instancia): number[] {
+    return Array.from(inst.faixa.children, (filho) => (filho as HTMLElement).offsetLeft);
+  }
+
+  function maximoDe(inst: Instancia): number {
+    return inst.faixa.scrollWidth - inst.faixa.clientWidth;
+  }
+
+  function cabeTudo(inst: Instancia): boolean {
+    return inst.faixa.children.length <= 1 || maximoDe(inst) <= 0;
+  }
+
+  function deslizar(inst: Instancia, passo: Passo): void {
+    inst.faixa.scrollTo({
+      left: passo.esquerda,
+      behavior: passo.salto || movimentoReduzido() ? 'auto' : 'smooth',
     });
   }
-  document.addEventListener('astro:page-load', ligarCarrosseis);
+
+  function parar(inst: Instancia): void {
+    if (inst.temporizador !== null) {
+      window.clearInterval(inst.temporizador);
+      inst.temporizador = null;
+    }
+  }
+
+  function arrancar(inst: Instancia): void {
+    parar(inst);
+    if (!inst.auto || movimentoReduzido() || cabeTudo(inst)) return;
+    inst.temporizador = window.setInterval(() => {
+      if (cabeTudo(inst)) {
+        parar(inst);
+        return;
+      }
+      deslizar(inst, proximoOffset(offsetsDe(inst), inst.faixa.scrollLeft, maximoDe(inst)));
+    }, inst.intervalo);
+  }
+
+  function actualizarPausa(inst: Instancia): void {
+    inst.raiz.toggleAttribute('data-sem-movimento', cabeTudo(inst));
+    if (inst.sobre || inst.focado || inst.aTocar || document.hidden) parar(inst);
+    else arrancar(inst);
+  }
+
+  function mover(inst: Instancia, passo: Passo): void {
+    deslizar(inst, passo);
+    actualizarPausa(inst);
+  }
+
+  function configurar(raiz: HTMLElement): void {
+    const faixa = raiz.querySelector<HTMLElement>('[data-faixa]');
+    if (!faixa) return;
+
+    const inst: Instancia = {
+      raiz,
+      faixa,
+      temporizador: null,
+      intervalo: Number(raiz.dataset.intervalo ?? 4000),
+      auto: raiz.hasAttribute('data-auto'),
+      sobre: false,
+      focado: false,
+      aTocar: false,
+    };
+    instancias.set(raiz, inst);
+
+    raiz.addEventListener('pointerenter', () => {
+      inst.sobre = true;
+      actualizarPausa(inst);
+    });
+    raiz.addEventListener('pointerleave', () => {
+      inst.sobre = false;
+      inst.aTocar = false;
+      actualizarPausa(inst);
+    });
+    raiz.addEventListener('focusin', () => {
+      inst.focado = true;
+      actualizarPausa(inst);
+    });
+    raiz.addEventListener('focusout', (evento) => {
+      if (evento.relatedTarget instanceof Node && raiz.contains(evento.relatedTarget)) return;
+      inst.focado = false;
+      actualizarPausa(inst);
+    });
+    raiz.addEventListener('pointerdown', () => {
+      inst.aTocar = true;
+      actualizarPausa(inst);
+    });
+    raiz.addEventListener('pointerup', () => {
+      inst.aTocar = false;
+      actualizarPausa(inst);
+    });
+    raiz.addEventListener('pointercancel', () => {
+      inst.aTocar = false;
+      actualizarPausa(inst);
+    });
+
+    raiz.querySelector<HTMLElement>('[data-seta-anterior]')?.addEventListener('click', () => {
+      mover(inst, offsetAnterior(offsetsDe(inst), inst.faixa.scrollLeft, maximoDe(inst)));
+    });
+    raiz.querySelector<HTMLElement>('[data-seta-seguinte]')?.addEventListener('click', () => {
+      mover(inst, proximoOffset(offsetsDe(inst), inst.faixa.scrollLeft, maximoDe(inst)));
+    });
+
+    faixa.addEventListener('keydown', (evento) => {
+      if (evento.key === 'ArrowRight') {
+        evento.preventDefault();
+        mover(inst, proximoOffset(offsetsDe(inst), inst.faixa.scrollLeft, maximoDe(inst)));
+      } else if (evento.key === 'ArrowLeft') {
+        evento.preventDefault();
+        mover(inst, offsetAnterior(offsetsDe(inst), inst.faixa.scrollLeft, maximoDe(inst)));
+      }
+    });
+
+    actualizarPausa(inst);
+  }
+
+  function limpar(): void {
+    for (const inst of instancias.values()) parar(inst);
+    instancias.clear();
+  }
+
+  function iniciar(): void {
+    limpar();
+    document.querySelectorAll<HTMLElement>('[data-carrossel]').forEach(configurar);
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    for (const inst of instancias.values()) actualizarPausa(inst);
+  });
+  window.addEventListener('resize', () => {
+    for (const inst of instancias.values()) actualizarPausa(inst);
+  });
+  document.addEventListener('astro:before-swap', limpar);
+  document.addEventListener('astro:page-load', iniciar);
 </script>
