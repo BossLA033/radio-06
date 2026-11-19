@@ -29,6 +29,27 @@
       "tag": "Entrevistas",
       "imagem": "/media/felisberto-madureira.webp",
       "href": "/noticias/nova-temporada-entrevistas/"
+    },
+    {
+      "titulo": "Festival Verão Luanda começa a contar",
+      "resumo": "Contagem decrescente para o maior encontro musical do verão na marginal.",
+      "tag": "Eventos",
+      "imagem": "/media/noticia-1.svg",
+      "href": "/noticias/festival-verao-luanda/"
+    },
+    {
+      "titulo": "Sábado com programação renovada",
+      "resumo": "Nova grelha aos sábados, com música angolana das sete da manhã à meia-noite.",
+      "tag": "Programação",
+      "imagem": "/media/noticia-2.svg",
+      "href": "/programas/sabado-x/"
+    },
+    {
+      "titulo": "Nova linha de podcasts no ar",
+      "resumo": "Três séries semanais passam a ficar disponíveis em qualquer altura.",
+      "tag": "Podcasts",
+      "imagem": "/media/noticia-3.svg",
+      "href": "/podcasts/"
     }
   ]
 }
