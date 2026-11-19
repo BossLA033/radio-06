@@ -115,3 +115,45 @@ test.describe('player', () => {
     await expect(page.locator('#player-icone')).toHaveText('❚❚');
   });
 });
+
+test.describe('carrosséis da homepage', () => {
+  test('a homepage tem exactamente 2 carrosséis com autoplay', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('[data-carrossel][data-auto]')).toHaveCount(2);
+    await expect(page.locator('[data-carrossel][data-auto][data-intervalo="5000"]')).toHaveCount(1);
+    await expect(page.locator('[data-carrossel][data-auto][data-intervalo="4000"]')).toHaveCount(1);
+  });
+
+  test('os destaques avançam sozinhos', async ({ page }) => {
+    await page.goto('/');
+    const faixa = page.locator('[aria-label="Destaques"] [data-faixa]');
+    await expect(faixa).toHaveCount(1);
+    const antes = await faixa.evaluate((el) => el.scrollLeft);
+    await page.waitForTimeout(6000);
+    const depois = await faixa.evaluate((el) => el.scrollLeft);
+    expect(depois).not.toBe(antes);
+  });
+
+  test('as notícias avançam sozinhas', async ({ page }) => {
+    await page.goto('/');
+    const faixa = page.locator('[aria-label="Notícias"] [data-faixa]');
+    await expect(faixa).toHaveCount(1);
+    const antes = await faixa.evaluate((el) => el.scrollLeft);
+    await page.waitForTimeout(5000);
+    const depois = await faixa.evaluate((el) => el.scrollLeft);
+    expect(depois).not.toBe(antes);
+  });
+
+  test('hover pausa e a seta seguinte dos destaques move a faixa', async ({ page }) => {
+    await page.goto('/');
+    const raiz = page.locator('[data-carrossel][data-auto][data-intervalo="5000"]');
+    await expect(raiz).toHaveCount(1);
+    await raiz.hover();
+    const faixa = raiz.locator('[data-faixa]');
+    const antes = await faixa.evaluate((el) => el.scrollLeft);
+    await raiz.getByRole('button', { name: 'Destaques seguinte' }).click();
+    await expect
+      .poll(() => faixa.evaluate((el) => el.scrollLeft), { timeout: 5000 })
+      .toBeGreaterThan(antes);
+  });
+});
