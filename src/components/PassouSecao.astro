@@ -15,7 +15,7 @@ const itens = passou?.itens ?? [];
         </div>
         <Carrossel id="passouCar">
           {itens.map((faixa) => (
-            <div class="item">
+            <li class="item">
               <div class="time">{faixa.hora}</div>
               <div class="disc">
                 <div class="vinyl" />
@@ -24,7 +24,7 @@ const itens = passou?.itens ?? [];
                 <b>{faixa.artista}</b>
                 {faixa.musica}
               </div>
-            </div>
+            </li>
           ))}
         </Carrossel>
       </div>

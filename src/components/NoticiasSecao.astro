@@ -1,19 +1,20 @@
 ---
 import { noticiasPublicadas, patrocinadoresPublicados } from '../lib/conteudo';
 import { formatarData } from '../lib/formatos';
+import Carrossel from './Carrossel.astro';
 import Imagem from './Imagem.astro';
 import Secao from './Secao.astro';
 
-const noticias = (await noticiasPublicadas()).slice(0, 3);
+const noticias = (await noticiasPublicadas()).slice(0, 7);
 const patrocinador = (await patrocinadoresPublicados())[0];
 ---
 
 {
   noticias.length > 0 && (
     <Secao id="noticias" titulo="NOTÍCIAS" href="/noticias/" rotulo="VER MAIS">
-      <ul class="news-grid">
+      <Carrossel id="noticiasCar" auto setas intervalo={4000} rotulo="Notícias">
         {noticias.map((noticia) => (
-          <li class="item" style="flex:none">
+          <li class="item" style="flex:0 0 300px">
             <a href={`/noticias/${noticia.id}/`} class="block">
               <div class="thumb">
                 <Imagem src={noticia.data.capa} alt={noticia.data.titulo} classe="size-full absolute inset-0" emoji="📰" />
@@ -27,7 +28,7 @@ const patrocinador = (await patrocinadoresPublicados())[0];
           </li>
         ))}
         {patrocinador && (
-          <li class="sponsor">
+          <li class="sponsor" style="flex:0 0 300px">
             <div class="thumb" style="height:150px">
               <Imagem src={patrocinador.data.logo} alt={patrocinador.data.nome} classe="size-full absolute inset-0" emoji="💳" />
             </div>
@@ -35,7 +36,7 @@ const patrocinador = (await patrocinadoresPublicados())[0];
             <span class="lbl">Conteúdo patrocinado</span>
           </li>
         )}
-      </ul>
+      </Carrossel>
     </Secao>
   )
 }

@@ -58,12 +58,12 @@ const programas = (await programasVisiveis()).slice(0, 6);
     <Secao id={id} titulo="Programas" href="/programas/" rotulo="Todos os programas">
       <Carrossel id="progCar">
         {programas.map((programa) => (
-          <div class="item">
+          <li class="item">
             <div class="thumb">
               <Imagem src={programa.data.imagem} alt={programa.data.nome} classe="size-full absolute inset-0" emoji="🎙️" />
             </div>
             <div class="txt">{programa.data.nome}</div>
-          </div>
+          </li>
         ))}
       </Carrossel>
     </Secao>
