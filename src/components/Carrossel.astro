@@ -2,18 +2,30 @@
 interface Props {
   id?: string;
   auto?: boolean;
+  deslize?: boolean;
   setas?: boolean;
   intervalo?: number;
+  velocidade?: number;
   rotulo?: string;
 }
 
-const { id, auto = false, setas = true, intervalo = 4000, rotulo = 'Carrossel' } = Astro.props;
+const {
+  id,
+  auto = false,
+  deslize = false,
+  setas = true,
+  intervalo = 4000,
+  velocidade = 30,
+  rotulo = 'Carrossel',
+} = Astro.props;
 ---
 
 <div
   class="relative"
   data-carrossel
-  data-auto={auto ? '' : null}
+  data-auto={auto || deslize ? '' : null}
+  data-deslize={deslize ? '' : null}
+  data-velocidade={velocidade}
   data-setas={setas ? '' : null}
   data-intervalo={intervalo}
   id={id}
@@ -56,6 +68,11 @@ const { id, auto = false, setas = true, intervalo = 4000, rotulo = 'Carrossel' }
     temporizador: number | null;
     intervalo: number;
     auto: boolean;
+    deslize: boolean;
+    velocidade: number;
+    ciclo: number;
+    raf: number | null;
+    ultimoTempo: number | null;
     sobre: boolean;
     focado: boolean;
     aTocar: boolean;
@@ -74,8 +91,29 @@ const { id, auto = false, setas = true, intervalo = 4000, rotulo = 'Carrossel' }
     return inst.faixa.scrollWidth - inst.faixa.clientWidth;
   }
 
+  function reaisDe(inst: Instancia): Element[] {
+    return Array.from(inst.faixa.children).filter(
+      (filho) => filho.getAttribute('aria-hidden') !== 'true',
+    );
+  }
+
   function cabeTudo(inst: Instancia): boolean {
-    return inst.faixa.children.length <= 1 || maximoDe(inst) <= 0;
+    if (reaisDe(inst).length <= 1) return true;
+    return !inst.deslize && maximoDe(inst) <= 0;
+  }
+
+  function clonarParaLoop(inst: Instancia): void {
+    const reais = Array.from(inst.faixa.children);
+    if (reais.length <= 1) return;
+    for (const filho of reais) {
+      const clone = filho.cloneNode(true) as HTMLElement;
+      clone.setAttribute('aria-hidden', 'true');
+      clone.setAttribute('tabindex', '-1');
+      inst.faixa.appendChild(clone);
+    }
+    const primeiroReal = reais[0] as HTMLElement;
+    const primeiroClone = inst.faixa.children[reais.length] as HTMLElement;
+    inst.ciclo = primeiroClone.offsetLeft - primeiroReal.offsetLeft;
   }
 
   function deslizar(inst: Instancia, passo: Passo): void {
@@ -90,11 +128,36 @@ const { id, auto = false, setas = true, intervalo = 4000, rotulo = 'Carrossel' }
       window.clearInterval(inst.temporizador);
       inst.temporizador = null;
     }
+    if (inst.raf !== null) {
+      cancelAnimationFrame(inst.raf);
+      inst.raf = null;
+      inst.ultimoTempo = null;
+    }
   }
 
   function arrancar(inst: Instancia): void {
     parar(inst);
-    if (!inst.auto || movimentoReduzido() || cabeTudo(inst)) return;
+    if (movimentoReduzido() || cabeTudo(inst)) return;
+    if (inst.deslize) {
+      inst.ultimoTempo = null;
+      const frame = (t: number): void => {
+        if (inst.raf === null) return;
+        if (cabeTudo(inst) || movimentoReduzido()) {
+          parar(inst);
+          return;
+        }
+        const anterior = inst.ultimoTempo ?? t;
+        inst.ultimoTempo = t;
+        const dt = Math.min(t - anterior, 100) / 1000;
+        let esquerda = inst.faixa.scrollLeft + inst.velocidade * dt;
+        if (inst.ciclo > 0 && esquerda >= inst.ciclo) esquerda -= inst.ciclo;
+        inst.faixa.scrollLeft = esquerda;
+        inst.raf = requestAnimationFrame(frame);
+      };
+      inst.raf = requestAnimationFrame(frame);
+      return;
+    }
+    if (!inst.auto) return;
     inst.temporizador = window.setInterval(() => {
       if (cabeTudo(inst)) {
         parar(inst);
@@ -125,11 +188,18 @@ const { id, auto = false, setas = true, intervalo = 4000, rotulo = 'Carrossel' }
       temporizador: null,
       intervalo: Number(raiz.dataset.intervalo ?? 4000),
       auto: raiz.hasAttribute('data-auto'),
+      deslize: raiz.hasAttribute('data-deslize'),
+      velocidade: Number(raiz.dataset.velocidade ?? 30),
+      ciclo: 0,
+      raf: null,
+      ultimoTempo: null,
       sobre: false,
       focado: false,
       aTocar: false,
     };
     instancias.set(raiz, inst);
+
+    if (inst.deslize) clonarParaLoop(inst);
 
     raiz.addEventListener('pointerenter', () => {
       inst.sobre = true;
