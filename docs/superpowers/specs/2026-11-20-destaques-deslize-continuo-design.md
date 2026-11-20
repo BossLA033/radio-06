@@ -32,6 +32,7 @@ Loop invisível: no init, o JS clona uma cópia dos cards reais (com `aria-hidde
    - `deslize?: boolean` (default `false`) — deriva contínua; atributo `data-deslize` no wrapper.
    - `velocidade?: number` (default `30`, px/s) — atributo `data-velocidade`.
    - Props existentes (`id`, `auto`, `setas`, `intervalo`, `rotulo`) mantêm o comportamento actual; `deslize` e `auto` são modos alternativos (se ambos, `deslize` ganha).
+   - O wrapper emite `data-auto` também quando `deslize` (ambos são movimento automático) — mantém o contrato dos testes existentes que contam `[data-carrossel][data-auto]`.
 2. **DestaquesSecao** (variante `carrossel`): `<Carrossel id="destaquesCar" deslize velocidade={30} setas rotulo="Destaques">` — perde `auto intervalo={5000}`.
 3. **Deriva:** rAF escreve `scrollLeft` a ~30 px/s; wrap `scrollLeft -= ciclo` ao alcançar o início da cópia. `dt` com clamp (máx. 100 ms por frame, pula frames em abas ocultas).
 4. **Clonagem:** apenas uma vez por init; clones com `aria-hidden="true"` e `tabindex="-1"` (leitores de ecrã e tabulação ignoram); contam para o `scrollWidth`, não para a lógica de conteúdo.
@@ -47,7 +48,7 @@ Loop invisível: no init, o JS clona uma cópia dos cards reais (com `aria-hidde
 | Tipo | Conteúdo |
 |---|---|
 | Unit (vitest) | **Sem alterações e sem testes novos** — o wrap da deriva (`scrollLeft -= ciclo`) vive no script do componente, sem função nova na lib; o comportamento é coberto pelo smoke |
-| Smoke (Playwright) | **1 novo:** `scrollLeft` dos Destaques muda em ≤2 s (deriva contínua, não salto de 5 s). Os 20 actuais continuam verdes (o teste "avançam sozinhos" e "hover pausa + seta" mantêm-se válidos) → total **21** |
+| Smoke (Playwright) | **1 novo:** `scrollLeft` dos Destaques muda em ≤2 s (deriva contínua, não salto de 5 s). **1 ajuste no existente:** o teste "2 carrosséis com autoplay" passa a identificar os Destaques por `[data-deslize]` em vez de `data-intervalo="5000"` (o prop `intervalo` deixa de ser usado nos Destaques; `data-intervalo="4000"` continua a afirmar as Notícias). Restantes 19 verdes → total **21** |
 | Gates | `npm run check` · `npm run lint` · `npm run test` · `npm run build` · `npm run smoke` |
 | Deploy | push a `main` → CD Vercel existente; confirmar produção |
 
