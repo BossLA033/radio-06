@@ -117,10 +117,10 @@ test.describe('player', () => {
 });
 
 test.describe('carrosséis da homepage', () => {
-  test('a homepage tem exactamente 2 carrosséis com autoplay', async ({ page }) => {
+  test('a homepage tem 2 carrosséis automáticos, um em deslize', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('[data-carrossel][data-auto]')).toHaveCount(2);
-    await expect(page.locator('[data-carrossel][data-auto][data-intervalo="5000"]')).toHaveCount(1);
+    await expect(page.locator('[data-carrossel][data-deslize]')).toHaveCount(1);
     await expect(page.locator('[data-carrossel][data-auto][data-intervalo="4000"]')).toHaveCount(1);
   });
 
@@ -144,9 +144,19 @@ test.describe('carrosséis da homepage', () => {
     expect(depois).not.toBe(antes);
   });
 
+  test('os destaques deslizam continuamente', async ({ page }) => {
+    await page.goto('/');
+    const faixa = page.locator('[aria-label="Destaques"] [data-faixa]');
+    await expect(faixa).toHaveCount(1);
+    const antes = await faixa.evaluate((el) => el.scrollLeft);
+    await page.waitForTimeout(2000);
+    const depois = await faixa.evaluate((el) => el.scrollLeft);
+    expect(depois).toBeGreaterThan(antes);
+  });
+
   test('hover pausa e a seta seguinte dos destaques move a faixa', async ({ page }) => {
     await page.goto('/');
-    const raiz = page.locator('[data-carrossel][data-auto][data-intervalo="5000"]');
+    const raiz = page.locator('[data-carrossel][data-deslize]');
     await expect(raiz).toHaveCount(1);
     await raiz.hover();
     const faixa = raiz.locator('[data-faixa]');

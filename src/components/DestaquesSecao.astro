@@ -32,7 +32,7 @@ const itens = destaques?.itens ?? [];
     </Secao>
   ) : itens.length > 0 ? (
     <Secao id={id} titulo={destaques?.titulo ?? 'Destaques'} href="/noticias/" rotulo="VER MAIS">
-      <Carrossel id="destaquesCar" auto setas intervalo={5000} rotulo="Destaques">
+      <Carrossel id="destaquesCar" deslize velocidade={30} setas rotulo="Destaques">
         {itens.map((item) => (
           <li class="item" style="flex:0 0 260px">
             <div class="thumb">

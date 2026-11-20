@@ -27,13 +27,13 @@ const {
   data-deslize={deslize ? '' : null}
   data-velocidade={velocidade}
   data-setas={setas ? '' : null}
-  data-intervalo={intervalo}
+  data-intervalo={deslize ? null : intervalo}
   id={id}
   role="group"
   aria-roledescription="carrossel"
   aria-label={rotulo}
 >
-  <ul class="car snap-x snap-mandatory" data-faixa tabindex="0">
+  <ul class:list={['car', !deslize && 'snap-x snap-mandatory']} data-faixa tabindex="0">
     <slot />
   </ul>
   {
