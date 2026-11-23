@@ -30,7 +30,7 @@
 - Consumes: nada (primeira task).
 - Produces: pasta do kit com `package.json`, `package-lock.json`, `src/`, `content/`, `public/` (inclui `admin/` e `media/`), `tests/`, configs, `README.md`, `docs/OPERACAO.md`; **sem** `.git`, `node_modules`, `dist`, `docs/superpowers`.
 
-- [ ] **Step 1: Copiar com robocopy**
+- [x] **Step 1: Copiar com robocopy**
 
 ```powershell
 $origem = 'C:\Users\breno\Documents\Antigraviti_texte\RAdio_06'
@@ -41,7 +41,7 @@ if ($LASTEXITCODE -ge 8) { "CLONE FALHOU (codigo $LASTEXITCODE)"; exit 1 } else 
 
 Expected: `copia ok (codigo 0..7)`.
 
-- [ ] **Step 2: Verificar inclusões e exclusões**
+- [x] **Step 2: Verificar inclusões e exclusões**
 
 ```powershell
 $kit = 'C:\Users\breno\Documents\Antigraviti_texte\RAdio_06-servidor-pago'
@@ -64,7 +64,7 @@ Expected: tudo `ok` / `ausente (bom)`.
 - Consumes: Task 1 (pasta do kit existe).
 - Produces: instruções completas de deploy em servidor pago (referenciadas pelo utilizador no futuro).
 
-- [ ] **Step 1: Escrever o LEIAME**
+- [x] **Step 1: Escrever o LEIAME**
 
 Conteúdo exacto do ficheiro:
 
@@ -136,7 +136,7 @@ Sem um destes, o `/admin` abre mas o login não funciona.
 O `/admin` está marcado com `X-Robots-Tag: noindex, nofollow` (não aparece nos motores de busca).
 ````
 
-- [ ] **Step 2: Verificar o ficheiro**
+- [x] **Step 2: Verificar o ficheiro**
 
 ```powershell
 $kit = 'C:\Users\breno\Documents\Antigraviti_texte\RAdio_06-servidor-pago'
@@ -161,7 +161,7 @@ Expected: tudo `ok`.
 - Consumes: Task 1 (mesmas exclusões).
 - Produces: script reutilizável que re-copia o RAdio_06 para o kit sem apagar `LEIAME-servidor.md` nem o próprio script.
 
-- [ ] **Step 1: Escrever o script**
+- [x] **Step 1: Escrever o script**
 
 Conteúdo exacto de `actualizar-kit.ps1`:
 
@@ -180,7 +180,7 @@ Write-Host "kit actualizado (codigo $LASTEXITCODE = sucesso)"
 
 Nota: usa `/E` (sem `/MIR`) para nunca apagar `LEIAME-servidor.md` nem o próprio script.
 
-- [ ] **Step 2: Correr o script para o testar**
+- [x] **Step 2: Correr o script para o testar**
 
 ```powershell
 & 'C:\Users\breno\Documents\Antigraviti_texte\RAdio_06-servidor-pago\actualizar-kit.ps1'
@@ -188,7 +188,7 @@ Nota: usa `/E` (sem `/MIR`) para nunca apagar `LEIAME-servidor.md` nem o própri
 
 Expected: `kit actualizado (codigo ... = sucesso)`.
 
-- [ ] **Step 3: Verificar que nada desapareceu**
+- [x] **Step 3: Verificar que nada desapareceu**
 
 ```powershell
 $kit = 'C:\Users\breno\Documents\Antigraviti_texte\RAdio_06-servidor-pago'
@@ -211,7 +211,7 @@ Expected: `ok` em tudo.
 - Consumes: Tasks 1–3.
 - Produces: evidência de que `npm ci` + os 4 gates correm a 0 dentro da pasta nova.
 
-- [ ] **Step 1: Instalar dependências no kit**
+- [x] **Step 1: Instalar dependências no kit**
 
 ```powershell
 Set-Location 'C:\Users\breno\Documents\Antigraviti_texte\RAdio_06-servidor-pago'
@@ -222,7 +222,7 @@ if ($LASTEXITCODE -ne 0) { 'NPM CI FALHOU'; exit 1 }
 
 Expected: `npm ci ok` (demora uns minutos; usa timeout de 600000 ms).
 
-- [ ] **Step 2: Correr os 4 gates**
+- [x] **Step 2: Correr os 4 gates**
 
 ```powershell
 Set-Location 'C:\Users\breno\Documents\Antigraviti_texte\RAdio_06-servidor-pago'
@@ -235,7 +235,7 @@ npm run test 2>$null | Select-Object -Last 3; if ($LASTEXITCODE -ne 0) { 'TEST F
 
 Expected: `GATES VERDES NO KIT`.
 
-- [ ] **Step 3: Limpar artefactos de teste do kit**
+- [x] **Step 3: Limpar artefactos de teste do kit**
 
 O kit final **não** deve levar `node_modules/`, `dist/` nem `.astro/` (são regeneráveis no servidor com `npm ci` + `npm run build`).
 
@@ -259,7 +259,7 @@ Expected: `removido`/`inexistente` e `ok` no fim.
 - Consumes: Tasks 1–4 concluídas.
 - Produces: plano commitado em `RAdio_06` (`docs:` sem acentos).
 
-- [ ] **Step 1: Marcar checkboxes e commitar**
+- [x] **Step 1: Marcar checkboxes e commitar**
 
 ```powershell
 Set-Location 'C:\Users\breno\Documents\Antigraviti_texte\RAdio_06'
